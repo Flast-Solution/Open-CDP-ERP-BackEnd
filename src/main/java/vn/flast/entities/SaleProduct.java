@@ -20,9 +20,6 @@ package vn.flast.entities;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,5 +35,4 @@ public class SaleProduct extends Product {
     private List<ProductAttributed> listProperties;
     private List<ProductSkus> skus;
     private List<ProductProperty> listOpenInfo;
-    private Long sessionId;
 }

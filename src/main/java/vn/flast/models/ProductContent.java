@@ -1,6 +1,6 @@
 package vn.flast.models;
 /**************************************************************************/
-/*  ProductImage.java                                                     */
+/*  ProductContent.java                                                   */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -21,6 +21,7 @@ package vn.flast.models;
 /**************************************************************************/
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,17 +29,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PostLoad;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
-import vn.flast.utils.NumberUtils;
+import vn.flast.utils.JsonUtils;
 
-@Table(name = "product_image")
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "product_content")
 @Entity
 @Getter @Setter
-public class ProductImage {
+public class ProductContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,27 +54,46 @@ public class ProductImage {
     @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "file_name")
-    private String fileName;
+    @Column(name = "slug")
+    private String slug;
 
-    @Column(name = "is_slideshow")
-    private Integer isSlideshow;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "is_featured")
-    private Integer isFeatured;
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "content")
+    private String content;
+
+    @JsonIgnore
+    @Column(name = "tags")
+    private String tags;
+
+    @JsonIgnore
+    @Column(name = "faqs")
+    private String faqs;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",referencedColumnName = "id", insertable=false, updatable=false)
     private Product product;
 
+    @Transient
+    private List<String> listTags = new ArrayList<>();
+
+    @Transient
+    private List<String> listFaqs = new ArrayList<>();
+
     @PrePersist
     public void beforePersist() {
-        if(NumberUtils.isNull(isSlideshow)) {
-            isSlideshow = 0;
-        }
-        if(NumberUtils.isNull(isFeatured)) {
-            isFeatured = 0;
-        }
+        tags = JsonUtils.toJson(listTags);
+        faqs = JsonUtils.toJson(listFaqs);
+    }
+
+    @PostLoad
+    public void beforeLoad() {
+        listTags = JsonUtils.Json2ListObject(tags, String.class);
+        listFaqs = JsonUtils.Json2ListObject(faqs, String.class);
     }
 }

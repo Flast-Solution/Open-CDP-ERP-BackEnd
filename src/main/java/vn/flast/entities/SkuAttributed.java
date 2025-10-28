@@ -20,9 +20,6 @@ package vn.flast.entities;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

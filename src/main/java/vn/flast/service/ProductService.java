@@ -22,7 +22,8 @@ package vn.flast.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.flast.entities.SaleProduct;
@@ -31,8 +32,9 @@ import vn.flast.models.*;
 import vn.flast.pagination.Ipage;
 import vn.flast.repositories.AttributedRepository;
 import vn.flast.repositories.AttributedValueRepository;
-import vn.flast.repositories.MediaRepository;
+import vn.flast.repositories.GenericRepository;
 import vn.flast.repositories.ProductAttributedRepository;
+import vn.flast.repositories.ProductContentRepository;
 import vn.flast.repositories.ProductPropertyRepository;
 import vn.flast.repositories.ProductRepository;
 import vn.flast.repositories.ProductSkusDetailsRepository;
@@ -43,8 +45,6 @@ import vn.flast.repositories.WarehouseProductRepository;
 import vn.flast.searchs.ProductFilter;
 import vn.flast.utils.Common;
 import vn.flast.utils.CopyProperty;
-import vn.flast.utils.EntityQuery;
-import vn.flast.utils.SqlBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,54 +52,25 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
     @PersistenceContext
     protected EntityManager entityManager;
 
-    @Autowired
-    private ProductRepository productsRepository;
-
-    @Autowired
-    private ProviderRepository providerRepository;
-
-    @Autowired
-    private ProductPropertyRepository productPropertyRepository;
-
-    @Autowired
-    private ProductAttributedRepository productAttributedRepository;
-
-    @Autowired
-    private ProductSkusRepository productSkusRepository;
-
-    @Autowired
-    private ProductSkusPriceRepository skusPriceRepository;
-
-    @Autowired
-    private ProductSkusDetailsRepository productSkusDetailsRepository;
-
-    @Autowired
-    private AttributedRepository attributedRepository;
-
-    @Autowired
-    private AttributedValueRepository attributedValueRepository;
-
-    @Autowired
-    private SkuService skuService;
-
-    @Autowired
-    private MediaService mediaService;
-
-    @Autowired
-    private MediaRepository mediaRepository;
-
-    @Autowired
-    private WarehouseProductRepository warehouseRepository;
-
-    public Product createdSeo(Product input) {
-        return productsRepository.save(input);
-    }
+    private final ProductContentRepository contentRepository;
+    private final ProductRepository productsRepository;
+    private final ProviderRepository providerRepository;
+    private final ProductPropertyRepository productPropertyRepository;
+    private final ProductAttributedRepository productAttributedRepository;
+    private final ProductSkusRepository productSkusRepository;
+    private final ProductSkusPriceRepository skusPriceRepository;
+    private final ProductSkusDetailsRepository productSkusDetailsRepository;
+    private final AttributedRepository attributedRepository;
+    private final AttributedValueRepository attributedValueRepository;
+    private final SkuService skuService;
+    private final WarehouseProductRepository warehouseRepository;
 
     @Transactional(rollbackFor = Exception.class)
     public Product saveProduct(SaleProduct input) {
@@ -115,12 +86,17 @@ public class ProductService {
             } while (productsRepository.findByCode(code) != null);
             input.setCode(code);
         }
+
         Product product = new Product();
         CopyProperty.CopyIgnoreNull(input, product);
         var data = productsRepository.save(product);
-        if(input.getSessionId() != 0) {
-            updateMedia(input.getSessionId(), data.getId());
+
+        /* Save Content */
+        ProductContent content = input.getContent();
+        if(Objects.nonNull(content)) {
+            contentRepository.save(content);
         }
+
         /* Save Attributed */
         productAttributedRepository.deleteByProductId(data.getId());
         List<ProductAttributed> productAttributedList = input.getListProperties().stream().flatMap(
@@ -160,106 +136,60 @@ public class ProductService {
         return data;
     }
 
-    public Product updated(Product input) {
-        var entity = productsRepository.findById(input.getId()).orElseThrow(
-            () -> new RuntimeException("Bản ghi không tồn tại !")
-        );
-        CopyProperty.CopyIgnoreNull(input, entity);
-        return productsRepository.save(entity);
-    }
-
-    private void updateMedia(Long sessionId, Long id) {
-        List<Media> mediaList = mediaService.listSessionId(sessionId);
-        if (!mediaList.isEmpty()) {
-            mediaList.forEach(media -> media.setObjectId(Math.toIntExact(id))); // Không cần chuyển `Long` -> `int`
-            mediaRepository.saveAll(mediaList); // Batch update
-        }
-    }
-
-    public SaleProduct findId(Long id) {
-        var entity = productsRepository.findById(id).orElseThrow(
-            () -> new RuntimeException("Bản ghi không tồn tại !")
-        );
-        SaleProduct saleProduct = new SaleProduct();
-        CopyProperty.CopyIgnoreNull(entity, saleProduct);
-        saleProduct.setListProperties(productAttributedRepository.findByProduct(entity.getId()));
-        saleProduct.setSkus(skuService.listProductSkuAndDetail(entity.getId()));
-        saleProduct.setListOpenInfo(productPropertyRepository.findByProductId(entity.getId()));
-        saleProduct.setWarehouses(warehouseRepository.findByProductId(entity.getId()));
-        return saleProduct;
-    }
-
     public SaleProduct findById(Long id) {
-        var entity = productsRepository.findById(id).orElseThrow(
+        GenericRepository.SpecificationBuilder<Product> builder = productsRepository
+            .fetch("content")
+            .fetch("images")
+            .isEqual("id", id);
+
+        var entity = builder.findOne().orElseThrow(
             () -> new RuntimeException("Bản ghi không tồn tại !")
         );
-        SaleProduct saleProduct = new SaleProduct();
-        CopyProperty.CopyIgnoreNull(entity, saleProduct);
-        saleProduct.setListProperties(productAttributedRepository.findByProduct(entity.getId()));
-        saleProduct.setSkus(skuService.listProductSkuAndDetail(saleProduct.getId()));
-        saleProduct.setListOpenInfo(productPropertyRepository.findByProductId(entity.getId()));
-        saleProduct.setImageLists(mediaService.list(Math.toIntExact(id), "Product")
-            .stream()
-            .map(Media::getFileName).collect(Collectors.toList()));
-        return saleProduct;
+
+        SaleProduct mProduct = new SaleProduct();
+        CopyProperty.CopyIgnoreNull(entity, mProduct);
+        mProduct.setListProperties(productAttributedRepository.findByProduct(entity.getId()));
+        mProduct.setSkus(skuService.listProductSkuAndDetail(mProduct.getId()));
+        mProduct.setListOpenInfo(productPropertyRepository.findByProductId(entity.getId()));
+        return mProduct;
     }
 
     public Ipage<?> fetch(ProductFilter filter) {
 
         int LIMIT = filter.limit();
         int PAGE = filter.page();
-        int OFFSET = (filter.page()) * LIMIT;
 
-        final String totalSQL = "FROM `product` p ";
-        SqlBuilder sqlBuilder = SqlBuilder.init(totalSQL);
-        if(Objects.nonNull(filter.ids())) {
-            sqlBuilder.addIn("p.id", filter.ids());
-        }
+        Sort SORT = Sort.by(Sort.Direction.DESC, "id");
+        GenericRepository.SpecificationBuilder<Product> builder = productsRepository
+            .like("name", filter.name());
 
-        sqlBuilder.addIntegerEquals("p.status", filter.status());
-        sqlBuilder.addIntegerEquals("p.service_id", filter.serviceId());
-        sqlBuilder.addStringEquals("p.code", filter.code());
-        sqlBuilder.like("p.name", filter.name());
-        sqlBuilder.addIntegerEquals("p.provider_id", filter.providerId());
-        sqlBuilder.addOrderByDesc("p.id");
+        Ipage<Product> iPage = builder.toPage(PAGE * LIMIT, LIMIT, SORT);
+        List<Product> lists = iPage.getEmbedded();
 
-        String finalQuery = sqlBuilder.builder();
-        var countQuery = entityManager.createNativeQuery(sqlBuilder.countQueryString());
-        Long count = sqlBuilder.countOrSumQuery(countQuery);
-
-        var nativeQuery = entityManager.createNativeQuery("SELECT p.* " + finalQuery, Product.class);
-        nativeQuery.setMaxResults(LIMIT);
-        nativeQuery.setFirstResult(OFFSET);
-
-        List<Product> lists = EntityQuery.getListOfNativeQuery(nativeQuery);
-        List<SaleProduct> listSaleProduct = lists.stream().map(product -> {
+        List<SaleProduct> mProducts = lists.stream().map(product -> {
             SaleProduct saleProduct = new SaleProduct();
-            CopyProperty.CopyIgnoreNull(product, saleProduct);
+            CopyProperty.CopyIgnoreNull(product.clone(), saleProduct);
             saleProduct.setListProperties(productAttributedRepository.findByProduct(product.getId()));
             saleProduct.setSkus(skuService.listProductSkuAndDetail(product.getId()));
             saleProduct.setListOpenInfo(productPropertyRepository.findByProductId(product.getId()));
-            saleProduct.setImageLists(new ArrayList<>());
 
             var warehouseEntities = warehouseRepository.findByProductId(product.getId());
             warehouseEntities.forEach(WarehouseProduct::addSKUDetailFormSkuInfo);
             saleProduct.setWarehouses(warehouseEntities);
             return saleProduct;
         }).toList();
-        return Ipage.generator(LIMIT, count, PAGE, listSaleProduct);
+        return Ipage.generator(LIMIT, builder.countItem(), PAGE, mProducts);
     }
 
     public List<SaleProduct> findByListId(List<Long> ids) {
-        var productList = productsRepository.findByListId(ids);
+        var lists = productsRepository.findByListId(ids);
         List<SaleProduct> list = new ArrayList<>();
-        for (Product product : productList) {
+        for (Product product : lists) {
             SaleProduct saleProduct = new SaleProduct();
-            CopyProperty.CopyIgnoreNull(product, saleProduct);
+            CopyProperty.CopyIgnoreNull(product.clone(), saleProduct);
             saleProduct.setListProperties(productAttributedRepository.findByProduct(product.getId()));
             saleProduct.setSkus(skuService.listProductSkuAndDetail(product.getId()));
             saleProduct.setListOpenInfo(productPropertyRepository.findByProductId(product.getId()));
-            saleProduct.setImageLists(mediaService.list(Math.toIntExact(product.getId()), "Product")
-                .stream()
-                .map(Media::getFileName).collect(Collectors.toList()));
             list.add(saleProduct);
         }
         return list;

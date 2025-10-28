@@ -31,10 +31,7 @@ import java.util.Objects;
 
 public class UploadsUtils {
 
-    public static String upload(
-        FilesInterface uploadFiles,
-        MultipartFile multipartFile
-    ) throws Exception {
+    public static String upload(FilesInterface uploadFiles, MultipartFile multipartFile ) throws Exception {
 
         Objects.requireNonNull(multipartFile, "Multipart not empty .!");
         String nameFile = multipartFile.getOriginalFilename();
@@ -44,16 +41,15 @@ public class UploadsUtils {
             throw new InvalidParamsException("File không được phép upload !");
         }
 
-        String subFolder = uploadFiles.createFolderUpload();
-        String fd = System.getProperty("user.dir") + subFolder + "/";
-
         String fileDeAccent = Common.deAccent(nameFile);
-        String filePath = fd + fileDeAccent;
-        InputStream fileStream = multipartFile.getInputStream();
+        String subFolder = uploadFiles.createFolderUpload();
+        String filePath = System.getProperty("user.dir") + subFolder + "/" + fileDeAccent;
         File targetFile = new File(filePath);
 
-        FileUtils.copyInputStreamToFile(fileStream, targetFile);
-        return subFolder.concat(fileDeAccent);
+        try (InputStream fileStream = multipartFile.getInputStream()) {
+            FileUtils.copyInputStreamToFile(fileStream, targetFile);
+        }
+        return subFolder.concat("/").concat(fileDeAccent);
     }
 
     private static String extension(String name) {

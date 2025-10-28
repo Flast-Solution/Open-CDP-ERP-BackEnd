@@ -1141,14 +1141,10 @@ CREATE TABLE `product` (
   `quality_in_stock` int DEFAULT '0',
   `total_import_stock` int DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,
-  `slug` varchar(255) DEFAULT NULL,
   `provider_id` int DEFAULT NULL,
   `unit` varchar(100) DEFAULT NULL,
   `price` int DEFAULT '0',
   `price_ref` int DEFAULT '0',
-  `seo_title` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
-  `seo_description` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
-  `seo_content` text,
   `image` varchar(255) DEFAULT NULL,
   `social` varchar(255) DEFAULT '{"view":139,"like":0,"shear":49}',
   `status` int DEFAULT '0',
@@ -1164,7 +1160,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (749,'FLJAJBCK',1,NULL,NULL,'Logo',NULL,10008,'Ấn phẩm',NULL,NULL,NULL,NULL,NULL,'/uploads/product-media/848811/18e1bbe27d4c18ca26235199af2971ba.jpg',NULL,1,NULL,'2025-07-18 04:23:15'),(769,'FLJANWCH',1,NULL,NULL,'Hộp Mềm',NULL,10008,'Hộp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,'2025-07-18 04:23:15'),(770,'FLJAORXZ',1,NULL,NULL,'Áo Phông',NULL,10008,'Bộ',NULL,NULL,NULL,NULL,NULL,'/uploads/product-media/848811/0ef255b2a7047723a05453bcd894ad9f.png',NULL,1,'2025-02-20 10:37:45','2025-07-18 04:23:15'),(771,'FLJANEMR',1,NULL,NULL,'Hộp cứng',NULL,10008,'SET',NULL,NULL,NULL,NULL,NULL,'/uploads/product-media/848811/12f30a541a8fbcb184ff87158dfc533e.png',NULL,1,'2025-02-18 04:51:50','2025-02-18 04:51:50'),(772,'MRJAHOMD',10014,NULL,NULL,'MRPO Duy Tân',NULL,10009,'Phòng',NULL,NULL,NULL,NULL,NULL,'/uploads/product-media/848811/387beefe7efdb28de54f458b570ad2f1.jpg',NULL,1,NULL,'2025-03-08 03:52:45'),(773,'FLJAXZGI',1,NULL,NULL,'Hộp yến sào Nam Bắc',NULL,10008,'Hộp',NULL,NULL,NULL,NULL,NULL,'/uploads/product-media/848811/085ccf8878b52af5a034188df2cab79c.jpg',NULL,1,NULL,'2025-03-21 02:53:45'),(774,'FLJAVXHD',1,NULL,NULL,'Hộp Mềm',NULL,10008,'Hộp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2025-03-06 01:42:33','2025-07-18 04:22:23'),(775,'FLJAIJLP',1,NULL,NULL,'Sách giáo khoa toán 1',NULL,10008,'Quyển',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2025-05-07 10:39:27','2025-05-07 10:39:27'),(776,'FLLYYEECPM',1,NULL,NULL,'Hộp carton lạnh',NULL,10008,'Hộp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,'2025-07-15 03:54:19'),(777,'FLJAPFLK',1,NULL,NULL,'Bánh Chocopie',NULL,10008,'Hộp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,'2025-06-13 08:46:45');
+INSERT INTO `product` VALUES (749,'FLJAJBCK',1,NULL,NULL,'Logo',10008,'Ấn phẩm',NULL,NULL,'/uploads/product-media/848811/18e1bbe27d4c18ca26235199af2971ba.jpg',NULL,1,NULL,'2025-07-18 04:23:15'),(769,'FLJANWCH',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,NULL,NULL,1,NULL,'2025-07-18 04:23:15'),(770,'FLJAORXZ',1,NULL,NULL,'Áo Phông',10008,'Bộ',NULL,NULL,'/uploads/product-media/848811/0ef255b2a7047723a05453bcd894ad9f.png',NULL,1,'2025-02-20 10:37:45','2025-07-18 04:23:15'),(771,'FLJANEMR',1,NULL,NULL,'Hộp cứng',10008,'SET',NULL,NULL,'/uploads/product-media/848811/12f30a541a8fbcb184ff87158dfc533e.png',NULL,1,'2025-02-18 04:51:50','2025-02-18 04:51:50'),(772,'MRJAHOMD',10014,NULL,NULL,'MRPO Duy Tân',10009,'Phòng',NULL,NULL,'/uploads/product-media/848811/387beefe7efdb28de54f458b570ad2f1.jpg',NULL,1,NULL,'2025-03-08 03:52:45'),(773,'FLJAXZGI',1,NULL,NULL,'Hộp yến sào Nam Bắc',10008,'Hộp',NULL,NULL,'/uploads/product-media/848811/085ccf8878b52af5a034188df2cab79c.jpg',NULL,1,NULL,'2025-03-21 02:53:45'),(774,'FLJAVXHD',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,NULL,NULL,1,'2025-03-06 01:42:33','2025-07-18 04:22:23'),(775,'FLJAIJLP',1,NULL,NULL,'Sách giáo khoa toán 1',10008,'Quyển',NULL,NULL,NULL,NULL,1,'2025-05-07 10:39:27','2025-05-07 10:39:27'),(776,'FLLYYEECPM',1,NULL,NULL,'Hộp carton lạnh',10008,'Hộp',NULL,NULL,NULL,NULL,1,NULL,'2025-07-15 03:54:19'),(777,'FLJAPFLK',1,NULL,NULL,'Bánh Chocopie',10008,'Hộp',NULL,NULL,NULL,NULL,1,NULL,'2025-06-13 08:46:45');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1223,6 +1219,36 @@ LOCK TABLES `product_category` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_content`
+--
+
+DROP TABLE IF EXISTS `product_content`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_content` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int unsigned DEFAULT '0',
+  `title` varchar(255) DEFAULT '',
+  `description` varchar(255) DEFAULT '',
+  `content` text NOT NULL,
+  `slug` varchar(255) DEFAULT '',
+  `tags` varchar(255) DEFAULT '',
+  `faqs` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `product_id_index` (`product_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=21589 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_content`
+--
+
+LOCK TABLES `product_content` WRITE;
+/*!40000 ALTER TABLE `product_content` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_content` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product_image`
 --
 
@@ -1234,9 +1260,10 @@ CREATE TABLE `product_image` (
   `product_id` int unsigned DEFAULT '0',
   `file_name` varchar(255) DEFAULT '',
   `is_slideshow` int unsigned DEFAULT '1',
+  `is_featured` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id_index` (`product_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=21589 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21593 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1245,6 +1272,7 @@ CREATE TABLE `product_image` (
 
 LOCK TABLES `product_image` WRITE;
 /*!40000 ALTER TABLE `product_image` DISABLE KEYS */;
+INSERT INTO `product_image` VALUES (21592,777,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',0,0);
 /*!40000 ALTER TABLE `product_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1943,4 +1971,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-22 18:27:34
+-- Dump completed on 2025-10-28 18:23:49

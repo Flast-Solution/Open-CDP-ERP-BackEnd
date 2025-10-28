@@ -38,6 +38,7 @@ import vn.flast.searchs.WarehouseFilter;
 import vn.flast.utils.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -133,6 +134,7 @@ public class WarehouseService {
     }
 
     public void appendFieldTransient(List<WarehouseProduct> lists) {
+
         List<Long> pIds = lists.stream().map(WarehouseProduct::getProductId).toList();
         List<Product> products = productRepository.findByListId(pIds);
         Map<Long, Product> mProducts = MapUtils.toIdentityMap(products, Product::getId);
@@ -144,7 +146,9 @@ public class WarehouseService {
         for(WarehouseProduct whProduct : lists) {
             whProduct.setSkuDetails(JsonUtils.Json2ListObject(whProduct.getSkuInfo(), SkuDetails.class));
             Product product = mProducts.get(whProduct.getProductId());
-            whProduct.setProduct(product);
+            if(Objects.nonNull(product)) {
+                whProduct.setProduct(product.clone());
+            }
             String mPName = mProviders.get(whProduct.getProviderId());
             whProduct.setProviderName(mPName);
         }

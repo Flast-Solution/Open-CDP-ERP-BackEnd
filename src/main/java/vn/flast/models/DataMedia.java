@@ -20,9 +20,6 @@ package vn.flast.models;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +40,7 @@ import java.util.List;
 public class DataMedia implements FilesInterface {
 
     public static String FOLDER_UPLOAD = "/uploads/data";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

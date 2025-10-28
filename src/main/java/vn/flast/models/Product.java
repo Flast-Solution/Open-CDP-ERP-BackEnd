@@ -21,11 +21,15 @@ package vn.flast.models;
 /**************************************************************************/
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -35,13 +39,15 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 @Table(name = "product")
 @Entity
 @Getter @Setter
-public class Product {
+public class Product implements Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,9 +69,6 @@ public class Product {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "slug")
-    private String slug;
-
     @Column(name = "provider_id")
     private Long providerId;
 
@@ -77,15 +80,6 @@ public class Product {
 
     @Column(name = "price_ref")
     private Long priceRef;
-
-    @Column(name = "seo_title")
-    private String seoTitle;
-
-    @Column(name = "seo_description")
-    private String seoDescription;
-
-    @Column(name = "seo_content")
-    private String seoContent;
 
     @Column(name = "image")
     private String image;
@@ -108,9 +102,26 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedTime;
 
-    @Transient
-    private List<String> imageLists;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private Collection<ProductImage> images;
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+    private ProductContent content;
 
     @Transient
     private List<WarehouseProduct> warehouses;
+
+    @Override
+    public Product clone() {
+        try {
+            Product clone = (Product) super.clone();
+            clone.setContent(null);
+            clone.setImages(new ArrayList<>());
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

@@ -34,11 +34,11 @@ public class Common {
     public static String deAccent(String str) {
         String nStr = str
             .replaceAll("Đ", "D")
-            .replaceAll("đ", "")
+            .replaceAll("đ", "d")
             .replaceAll(" ", "-");
         String nfdNormalizedString = Normalizer.normalize(nStr, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(nfdNormalizedString).toString();
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
     public static String escape(String s) {
