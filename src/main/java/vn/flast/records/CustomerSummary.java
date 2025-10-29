@@ -1,6 +1,6 @@
 package vn.flast.records;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  CustomerSummary.java                                                  */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,20 +20,20 @@ package vn.flast.records;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityResult;
-import jakarta.persistence.FieldResult;
-import jakarta.persistence.Id;
-import jakarta.persistence.SqlResultSetMapping;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.math.BigDecimal;
 
 @SqlResultSetMapping(
     name = "CustomerSummary",
     entities = @EntityResult(entityClass = CustomerSummary.class, fields = {
         @FieldResult(name = "opportunities", column = "opportunities"),
         @FieldResult(name = "orders", column = "orders"),
+        @FieldResult(name = "total", column = "total"),
+        @FieldResult(name = "clv", column = "clv"),
+        @FieldResult(name = "avg", column = "avg"),
         @FieldResult(name = "leads", column = "leads")
     })
 )
@@ -44,5 +44,8 @@ public class CustomerSummary {
     @Id
     private Integer opportunities;
     private Integer orders;
+    private Long total;
     private Integer leads;
+    private BigDecimal clv;
+    private BigDecimal avg;
 }

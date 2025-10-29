@@ -97,11 +97,19 @@ public class CustomerServiceGlobal {
 
     private CustomerSummary summary(String mobile) {
         String query = """
-        SELECT\s
+        SELECT
             IFNULL(SUM(CASE WHEN co.type = 'cohoi' THEN 1 ELSE 0 END), 0) AS opportunities,
             IFNULL(SUM(CASE WHEN co.type = 'order' THEN 1 ELSE 0 END), 0) AS orders,
+            IFNULL(SUM(CASE WHEN co.type = 'order' THEN co.total ELSE 0 END), 0) AS total,
+            IFNULL(AVG(CASE WHEN co.type = 'order' THEN co.total END), 0) AS avg,
+            IFNULL(
+                (AVG(CASE WHEN co.type = 'order' THEN co.total END))
+                * (COUNT(CASE WHEN co.type = 'order' THEN 1 END) / (GREATEST(TIMESTAMPDIFF(DAY, MIN(co.created_at), MAX(co.created_at)) / 365, 1)))
+                * (TIMESTAMPDIFF(DAY, MIN(co.created_at), MAX(co.created_at)) / 365),
+                0
+            ) AS clv,
             IFNULL((SELECT COUNT(id) FROM data WHERE customer_mobile = :mobile), 0) AS leads
-        FROM customer_order co\s
+        FROM customer_order co
         WHERE co.customer_mobile_phone = :mobile
         """;
         var nativeQuery = entityManager.createNativeQuery(query, CustomerSummary.class);
