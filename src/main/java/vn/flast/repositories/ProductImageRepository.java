@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  ProductImageRepository.java                                           */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -21,7 +21,14 @@ package vn.flast.repositories;
 /**************************************************************************/
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import vn.flast.models.ProductImage;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Integer> {
+    @Transactional
+    @Modifying
+    @Query("UPDATE ProductImage p SET p.isSlideshow = 0 WHERE p.productId = :productId")
+    void resetSlideShow(Long productId);
 }

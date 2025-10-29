@@ -1,6 +1,6 @@
 package vn.flast.utils;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  JsonUtils.java                                                        */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -66,6 +66,7 @@ public class JsonUtils {
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
+			log.error("{}", e.getMessage());
 			return null;
 		}
 	}

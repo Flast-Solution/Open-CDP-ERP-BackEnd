@@ -1,4 +1,4 @@
-package vn.flast.service;
+package vn.flast.service.product;
 /**************************************************************************/
 /*  app.java                                                              */
 /**************************************************************************/
@@ -19,56 +19,49 @@ package vn.flast.service;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
+
+
+
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vn.flast.models.Category;
+import vn.flast.models.ProductProperty;
 import vn.flast.pagination.Ipage;
-import vn.flast.repositories.CategoryRepository;
-import vn.flast.repositories.GenericRepository;
-import vn.flast.searchs.CategoryFilter;
-import vn.flast.utils.CopyProperty;
+import vn.flast.repositories.ProductPropertyRepository;
+import vn.flast.searchs.AttributedFilter;
+import vn.flast.utils.EntityQuery;
 
 @Service
-public class CategoryService {
+public class ProductPropertyService {
 
     @PersistenceContext
     protected EntityManager entityManager;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private ProductPropertyRepository productPropertyRepository;
 
-    public Category created(Category input){
-        return categoryRepository.save(input);
+    public ProductProperty created(ProductProperty input){
+        return productPropertyRepository.save(input);
     }
 
-    public Category updated(Category input) {
-        var category = categoryRepository.findById(input.getId()).orElseThrow(
-            () -> new RuntimeException("Bản ghi không tồn tại !")
-        );
-        CopyProperty.CopyIgnoreNull(input, category);
-        return categoryRepository.save(category);
-    }
-
-    public Ipage<Category> fetch(CategoryFilter filter) {
-        int LIMIT = 10;
-        int PAGE = filter.page();
-        Sort SORT = Sort.by(Sort.Direction.DESC, "id");
-        GenericRepository.SpecificationBuilder<Category> builder = categoryRepository
-            .like("name", filter.name())
-            .in("id", filter.ids())
-            .isEqual("id", filter.id());
-        return builder.toPage(PAGE * LIMIT, LIMIT, SORT);
+    public Ipage<?> fetch(AttributedFilter filter){
+        int LIMIT = 20;
+        int currentPage = filter.page();
+        var et = EntityQuery.create(entityManager, ProductProperty.class);
+        et.like("name", filter.name());
+        et.setMaxResults(LIMIT).setFirstResult(LIMIT * currentPage);
+        var lists = et.list();
+        return  Ipage.generator(LIMIT, et.count(), currentPage, lists);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id){
-        var data = categoryRepository.findById(id).orElseThrow(
+    public void delete(Integer id){
+        var data = productPropertyRepository.findById(id).orElseThrow(
             () -> new RuntimeException("Bản ghi không tồn tại !")
         );
-        categoryRepository.delete(data);
+        productPropertyRepository.delete(data);
     }
 }

@@ -127,7 +127,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (10008,0,'React.Js',NULL,0,'',NULL,0,'','',NULL,'2024-11-13 05:05:31','2024-11-13 05:05:31');
+INSERT INTO `category` VALUES (10008,0,'Cafe Laman',NULL,0,'',NULL,0,'','',NULL,'2024-11-13 05:05:31','2025-10-29 06:53:50');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1160,7 +1160,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (749,'FLJAJBCK',1,NULL,NULL,'Logo',10008,'Ấn phẩm',NULL,NULL,'/uploads/product-media/848811/18e1bbe27d4c18ca26235199af2971ba.jpg',NULL,1,NULL,'2025-07-18 04:23:15'),(769,'FLJANWCH',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,NULL,NULL,1,NULL,'2025-07-18 04:23:15'),(770,'FLJAORXZ',1,NULL,NULL,'Áo Phông',10008,'Bộ',NULL,NULL,'/uploads/product-media/848811/0ef255b2a7047723a05453bcd894ad9f.png',NULL,1,'2025-02-20 10:37:45','2025-07-18 04:23:15'),(771,'FLJANEMR',1,NULL,NULL,'Hộp cứng',10008,'SET',NULL,NULL,'/uploads/product-media/848811/12f30a541a8fbcb184ff87158dfc533e.png',NULL,1,'2025-02-18 04:51:50','2025-02-18 04:51:50'),(772,'MRJAHOMD',10014,NULL,NULL,'MRPO Duy Tân',10009,'Phòng',NULL,NULL,'/uploads/product-media/848811/387beefe7efdb28de54f458b570ad2f1.jpg',NULL,1,NULL,'2025-03-08 03:52:45'),(773,'FLJAXZGI',1,NULL,NULL,'Hộp yến sào Nam Bắc',10008,'Hộp',NULL,NULL,'/uploads/product-media/848811/085ccf8878b52af5a034188df2cab79c.jpg',NULL,1,NULL,'2025-03-21 02:53:45'),(774,'FLJAVXHD',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,NULL,NULL,1,'2025-03-06 01:42:33','2025-07-18 04:22:23'),(775,'FLJAIJLP',1,NULL,NULL,'Sách giáo khoa toán 1',10008,'Quyển',NULL,NULL,NULL,NULL,1,'2025-05-07 10:39:27','2025-05-07 10:39:27'),(776,'FLLYYEECPM',1,NULL,NULL,'Hộp carton lạnh',10008,'Hộp',NULL,NULL,NULL,NULL,1,NULL,'2025-07-15 03:54:19'),(777,'FLJAPFLK',1,NULL,NULL,'Bánh Chocopie',10008,'Hộp',NULL,NULL,NULL,NULL,1,NULL,'2025-06-13 08:46:45');
+INSERT INTO `product` VALUES (749,'FLJAJBCK',1,NULL,NULL,'Logo',10008,'Ấn phẩm',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(769,'FLJANWCH',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(770,'FLJAORXZ',1,NULL,NULL,'Áo Phông',10008,'Bộ',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-02-20 10:37:45','2025-10-29 08:37:50'),(771,'FLJANEMR',1,NULL,NULL,'Hộp cứng',10008,'SET',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-02-18 04:51:50','2025-10-29 08:37:50'),(772,'MRJAHOMD',10014,NULL,NULL,'MRPO Duy Tân',10009,'Phòng',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(773,'FLJAXZGI',1,NULL,NULL,'Hộp yến sào Nam Bắc',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(774,'FLJAVXHD',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-03-06 01:42:33','2025-10-29 08:37:50'),(775,'FLJAIJLP',1,NULL,NULL,'Sách giáo khoa toán 1',10008,'Quyển',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-05-07 10:39:27','2025-10-29 08:37:50'),(776,'FLLYYEECPM',1,NULL,NULL,'Hộp carton lạnh',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(777,'FLJAPFLK',1,NULL,NULL,'Bánh Chocopie',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:36:33');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1206,7 +1206,7 @@ CREATE TABLE `product_category` (
   PRIMARY KEY (`id`),
   KEY `idx-cmp-category_id` (`category_id`),
   KEY `idx-cmp-product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=309 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1215,6 +1215,7 @@ CREATE TABLE `product_category` (
 
 LOCK TABLES `product_category` WRITE;
 /*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
+INSERT INTO `product_category` VALUES (308,10008,777);
 /*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1234,9 +1235,10 @@ CREATE TABLE `product_content` (
   `slug` varchar(255) DEFAULT '',
   `tags` varchar(255) DEFAULT '',
   `faqs` varchar(255) DEFAULT '',
+  `category` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id_index` (`product_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=21589 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21590 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1245,6 +1247,7 @@ CREATE TABLE `product_content` (
 
 LOCK TABLES `product_content` WRITE;
 /*!40000 ALTER TABLE `product_content` DISABLE KEYS */;
+INSERT INTO `product_content` VALUES (21589,777,'Bánh Chocopie đặc sản Hà Giang','Bánh Chocopie ngon nhất vùng tây bắc - Việt Nam','','banh-chocopie-ha-giang','[]','[]','[10008]');
 /*!40000 ALTER TABLE `product_content` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1272,7 +1275,7 @@ CREATE TABLE `product_image` (
 
 LOCK TABLES `product_image` WRITE;
 /*!40000 ALTER TABLE `product_image` DISABLE KEYS */;
-INSERT INTO `product_image` VALUES (21592,777,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',0,0);
+INSERT INTO `product_image` VALUES (21592,777,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',0,1);
 /*!40000 ALTER TABLE `product_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1971,4 +1974,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-28 18:23:49
+-- Dump completed on 2025-10-29 16:24:50

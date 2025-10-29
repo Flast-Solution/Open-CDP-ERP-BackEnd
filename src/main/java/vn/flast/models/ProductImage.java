@@ -71,4 +71,12 @@ public class ProductImage {
             isFeatured = 0;
         }
     }
+
+    public void toggleFeatured() {
+        isFeatured ^= 1;
+    }
+
+    public boolean isFeatured() {
+        return NumberUtils.isNotNull(isFeatured) && isFeatured == 1;
+    }
 }

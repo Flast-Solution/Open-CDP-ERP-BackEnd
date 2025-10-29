@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.flast.entities.MyResponse;
 import vn.flast.models.ProductProperty;
 import vn.flast.searchs.AttributedFilter;
-import vn.flast.service.ProductPropertyService;
+import vn.flast.service.product.ProductPropertyService;
 import vn.flast.validator.ValidationErrorBuilder;
 
 @RestController

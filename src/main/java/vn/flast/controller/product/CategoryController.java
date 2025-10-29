@@ -1,6 +1,6 @@
 package vn.flast.controller.product;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  CategoryController.java                                               */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,11 +20,8 @@ package vn.flast.controller.product;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,16 +30,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vn.flast.entities.MyResponse;
 import vn.flast.models.Category;
+import vn.flast.searchs.CategoryFilter;
 import vn.flast.service.CategoryService;
 import vn.flast.validator.ValidationErrorBuilder;
 import org.springframework.validation.Errors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @PostMapping("/created")
     public MyResponse<?> created(@Valid @RequestBody Category input, Errors errors) {
@@ -65,8 +63,8 @@ public class CategoryController {
     }
 
     @GetMapping("/fetch")
-    public MyResponse<?> fetch(@RequestParam Integer page) {
-        var data = categoryService.fetch(page);
+    public MyResponse<?> fetch(CategoryFilter filter) {
+        var data = categoryService.fetch(filter);
         return MyResponse.response(data);
     }
 

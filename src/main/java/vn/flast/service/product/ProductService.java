@@ -1,4 +1,4 @@
-package vn.flast.service;
+package vn.flast.service.product;
 /**************************************************************************/
 /*  app.java                                                              */
 /**************************************************************************/
@@ -43,6 +43,7 @@ import vn.flast.repositories.ProductSkusRepository;
 import vn.flast.repositories.ProviderRepository;
 import vn.flast.repositories.WarehouseProductRepository;
 import vn.flast.searchs.ProductFilter;
+import vn.flast.service.SkuService;
 import vn.flast.utils.Common;
 import vn.flast.utils.CopyProperty;
 

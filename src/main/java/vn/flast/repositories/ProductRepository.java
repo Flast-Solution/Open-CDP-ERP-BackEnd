@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  ProductRepository.java                                                */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,7 +20,9 @@ package vn.flast.repositories;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import vn.flast.models.Product;
 import java.util.List;
 
@@ -31,4 +33,9 @@ public interface ProductRepository extends GenericRepository<Product, Long> {
 
     @Query("FROM Product p WHERE p.id IN (:ids)")
     List<Product> findByListId(List<Long> ids);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Product p SET p.image = :image WHERE p.id = :id")
+    void updateImage(String image, Long id);
 }

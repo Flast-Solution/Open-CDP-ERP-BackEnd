@@ -96,7 +96,7 @@ public interface GenericRepository<T, ID> extends JpaRepository<T, ID>, JpaSpeci
 
         public SpecificationBuilder<T> in(String fieldName, Iterable<?> values) {
             Specification<T> spec = (root, query, cb) -> {
-                if (values == null) {
+                if (values == null || !values.iterator().hasNext()) {
                     return cb.conjunction();
                 }
                 return getFieldPath(root, fieldName).in(values);

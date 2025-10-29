@@ -1,6 +1,6 @@
 package vn.flast.models;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  Category.java                                                         */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,9 +19,6 @@ package vn.flast.models;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-
-
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

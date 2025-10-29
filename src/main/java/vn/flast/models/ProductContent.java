@@ -20,9 +20,10 @@ package vn.flast.models;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,13 +31,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PostLoad;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
-import vn.flast.utils.JsonUtils;
+import vn.flast.converter.IntegerListJsonConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +42,7 @@ import java.util.List;
 @Table(name = "product_content")
 @Entity
 @Getter @Setter
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ProductContent {
 
     @Id
@@ -66,34 +65,20 @@ public class ProductContent {
     @Column(name = "content")
     private String content;
 
-    @JsonIgnore
-    @Column(name = "tags")
-    private String tags;
+    @Convert(converter = IntegerListJsonConverter.class)
+    @Column(name = "tags", columnDefinition = "TEXT")
+    private List<Integer> listTags = new ArrayList<>();
 
-    @JsonIgnore
-    @Column(name = "faqs")
-    private String faqs;
+    @Convert(converter = IntegerListJsonConverter.class)
+    @Column(name = "faqs", columnDefinition = "TEXT")
+    private List<Integer> listFaqs = new ArrayList<>();
 
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",referencedColumnName = "id", insertable=false, updatable=false)
     private Product product;
 
-    @Transient
-    private List<String> listTags = new ArrayList<>();
-
-    @Transient
-    private List<String> listFaqs = new ArrayList<>();
-
-    @PrePersist
-    public void beforePersist() {
-        tags = JsonUtils.toJson(listTags);
-        faqs = JsonUtils.toJson(listFaqs);
-    }
-
-    @PostLoad
-    public void beforeLoad() {
-        listTags = JsonUtils.Json2ListObject(tags, String.class);
-        listFaqs = JsonUtils.Json2ListObject(faqs, String.class);
-    }
+    @Convert(converter = IntegerListJsonConverter.class)
+    @Column(name = "category", columnDefinition = "TEXT")
+    private List<Long> listCategories = new ArrayList<>();
 }

@@ -20,9 +20,6 @@ package vn.flast.service;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.flast.models.ProductSkus;
@@ -49,7 +46,7 @@ public class SkuService {
     @Autowired
     private ProductSkusPriceRepository skusPriceRepository;
 
-    List<ProductSkus> listProductSkuAndDetail(Long productId) {
+    public List<ProductSkus> listProductSkuAndDetail(Long productId) {
         List<ProductSkus> skusList = productSkusRepository.findByProductId(productId);
         if (skusList.isEmpty()) {
             return skusList;

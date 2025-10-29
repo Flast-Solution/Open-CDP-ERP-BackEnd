@@ -20,11 +20,21 @@ package vn.flast.repositories;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import vn.flast.models.ProductCategory;
+import java.util.List;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Integer> {
+    @Query("FROM ProductCategory c WHERE c.productId = :productId")
+    List<ProductCategory> findProductId(Long productId);
+
+    @Modifying
+    void deleteByProductIdAndCategoryIdIn(Long productId, List<Long> categoryIds);
+
+    @Modifying
+    @Query("DELETE FROM ProductCategory pc WHERE pc.productId = :productId")
+    void deleteAllByProductId(@Param("productId") Long productId);
 }
