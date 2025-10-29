@@ -177,6 +177,7 @@ public class CustomerServiceGlobal {
         """;
         var queryCount = entityManager.createNativeQuery(queryCountOrder, EnterpriseCountOrder.class);
         queryCount.setParameter("listIds", eIds);
+
         var listCounts = EntityQuery.<EnterpriseCountOrder>getListOfNativeQuery(queryCount);
         var mList = MapUtils.mapKeyValue(listCounts, EnterpriseCountOrder::getEId, EnterpriseCountOrder::getCount);
         for(CustomerEnterprise enterprise : listData) {
