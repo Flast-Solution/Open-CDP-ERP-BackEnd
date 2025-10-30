@@ -1,15 +1,18 @@
 package vn.flast.repositories;
 
 import jakarta.persistence.criteria.*;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import vn.flast.pagination.Ipage;
+
+import java.lang.reflect.Field;
 import java.util.*;
 
 @NoRepositoryBean
@@ -22,6 +25,7 @@ public interface GenericRepository<T, ID> extends JpaRepository<T, ID>, JpaSpeci
         private boolean useOr = false;
         private SpecificationBuilder<T> currentGroup = null;
 
+        private final Set<String> fetchedAttributes = new HashSet<>();
         private final List<String> joinAttributes;
         private final List<String> fetchAttributes;
 
@@ -39,6 +43,7 @@ public interface GenericRepository<T, ID> extends JpaRepository<T, ID>, JpaSpeci
 
         public SpecificationBuilder<T> fetch(String attribute) {
             fetchAttributes.add(attribute);
+            fetchedAttributes.add(attribute);
             return this;
         }
 
@@ -207,33 +212,92 @@ public interface GenericRepository<T, ID> extends JpaRepository<T, ID>, JpaSpeci
         }
 
         public List<T> findAll() {
-            return repository.findAll(buildSpecification());
+            return repository.findAllWithPostProcess(buildSpecification(), fetchedAttributes);
         }
 
         public Optional<T> findOne() {
-            return repository.findOne(buildSpecification());
+            return repository.findOneWithPostProcess(buildSpecification(), fetchedAttributes);
         }
 
         public List<T> findAll(int offset, int limit) {
-            return repository.findAll(buildSpecification(), repository.createPageRequest(offset, limit)).getContent();
+            Page<T> page = repository.findAll(buildSpecification(), repository.createPageRequest(offset, limit));
+            List<T> content = page.getContent();
+            content.forEach(entity -> repository.autoPostProcess(entity, fetchedAttributes));
+            return content;
         }
 
         public List<T> findAll(int offset, int limit, Sort sort) {
-            return repository.findAll(buildSpecification(), repository.createPageRequest(offset, limit, sort)).getContent();
+            Page<T> page = repository.findAll(buildSpecification(), repository.createPageRequest(offset, limit, sort));
+            List<T> content = page.getContent();
+            content.forEach(entity -> repository.autoPostProcess(entity, fetchedAttributes));
+            return content;
         }
 
         public Ipage<T> toPage(int offset, int limit, Sort sort) {
-            if (offset < 0 || limit <= 0) {
-                throw new IllegalArgumentException("Offset must be non-negative and limit must be positive");
-            }
-            Pageable pageable = PageRequest.of(offset / limit, limit, sort);
-            Page<T> page = repository.findAll(buildSpecification(), pageable);
-            return Ipage.generator(limit, page.getTotalElements(), page.getNumber(), page.getContent());
+            return repository.toPageWithPostProcess(offset, limit, sort, buildSpecification(), fetchedAttributes);
         }
 
         public long countItem() {
             return repository.count(buildSpecification());
         }
+    }
+
+    default void autoPostProcess(T entity, Set<String> fetchedAttributes) {
+        if (Objects.isNull(entity)) {
+            return;
+        }
+        try {
+            Class<?> clazz = entity.getClass();
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                if (fetchedAttributes.contains(field.getName())) {
+                    continue;
+                }
+
+                field.setAccessible(true);
+                Object currentValue = field.get(entity);
+                if (!Collection.class.isAssignableFrom(field.getType())) {
+                    /* SINGLE OBJECT (ManyToOne, OneToOne) */
+                    if (currentValue instanceof HibernateProxy && !Hibernate.isInitialized(currentValue)) {
+                        field.set(entity, null);
+                    }
+                    continue;
+                }
+
+                /* Collection (OneToMany, ManyToMany) */
+                /* Nếu là proxy (chưa load) hoặc null → gán empty */
+                if ( Objects.isNull(currentValue) || !Hibernate.isInitialized(currentValue)) {
+                    if (Set.class.isAssignableFrom(field.getType())) {
+                        field.set(entity, Set.of());
+                    } else if (List.class.isAssignableFrom(field.getType())) {
+                        field.set(entity, List.of());
+                    } else {
+                        field.set(entity, Collections.emptyList());
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+            /* Log */
+        }
+    }
+
+    default List<T> findAllWithPostProcess(Specification<T> spec, Set<String> fetched) {
+        List<T> result = findAll(spec);
+        result.forEach(entity -> autoPostProcess(entity, fetched));
+        return result;
+    }
+
+    default Optional<T> findOneWithPostProcess(Specification<T> spec, Set<String> fetched) {
+        return findOne(spec).map(entity -> {
+            autoPostProcess(entity, fetched);
+            return entity;
+        });
+    }
+
+    default Ipage<T> toPageWithPostProcess(int offset, int limit, Sort sort, Specification<T> spec, Set<String> fetched) {
+        Page<T> page = findAll(spec, createPageRequest(offset, limit, sort));
+        page.getContent().forEach(entity -> autoPostProcess(entity, fetched));
+        return Ipage.generator(limit, page.getTotalElements(), page.getNumber(), page.getContent());
     }
 
     default SpecificationBuilder<T> isEqual(String fieldName, Object value) {
