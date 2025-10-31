@@ -1135,7 +1135,7 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `code` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `service_id` int DEFAULT '0',
   `quality_in_stock` int DEFAULT '0',
@@ -1202,7 +1202,7 @@ DROP TABLE IF EXISTS `product_category`;
 CREATE TABLE `product_category` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category_id` int NOT NULL,
-  `product_id` int NOT NULL,
+  `product_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx-cmp-category_id` (`category_id`),
   KEY `idx-cmp-product_id` (`product_id`)
@@ -1290,7 +1290,7 @@ CREATE TABLE `product_material` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `material_id` bigint NOT NULL,
   `material_unit` varchar(100) DEFAULT NULL,
-  `product_id` int unsigned NOT NULL,
+  `product_id` bigint NOT NULL,
   `sku_id` int NOT NULL,
   `quantity` decimal(15,2) NOT NULL,
   `width` decimal(15,2) DEFAULT NULL,
@@ -1974,4 +1974,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-29 16:24:50
+-- Dump completed on 2025-10-31 11:02:47
