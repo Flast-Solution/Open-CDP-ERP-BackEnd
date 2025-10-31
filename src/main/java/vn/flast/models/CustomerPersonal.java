@@ -63,10 +63,10 @@ public class CustomerPersonal {
     private String gender;
 
     @Column(name = "source_id")
-    private Long sourceId;
+    private Integer sourceId;
 
     @Column(name = "level")
-    private Long level;
+    private Integer level;
 
     @Column(name = "facebook_id")
     private String facebookId;

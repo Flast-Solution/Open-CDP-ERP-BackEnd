@@ -57,7 +57,7 @@ public class WarehouseProduct implements Cloneable {
     private Long productId;
 
     @Column(name = "provider_id")
-    private Long providerId;
+    private Integer providerId;
 
     @Column(name = "sku_id")
     private Long skuId;

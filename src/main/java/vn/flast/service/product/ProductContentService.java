@@ -22,12 +22,12 @@ public class ProductContentService {
 
     public void updateCategory(ProductContent input) {
         Long productId = input.getProductId();
-        List<Long> newCategoryIds = input.getListCategories();
+        List<Integer> newCategoryIds = input.getListCategories();
 
         /* === XÓA Category CŨ === */
         List<ProductCategory> oldCategories = mPCategoryRepository.findProductId(productId);
-        List<Long> oldIds = oldCategories.stream().map(ProductCategory::getCategoryId).toList();
-        List<Long> idsToDelete = oldIds.stream().filter(id -> !newCategoryIds.contains(id)).toList();
+        List<Integer> oldIds = oldCategories.stream().map(ProductCategory::getCategoryId).toList();
+        List<Integer> idsToDelete = oldIds.stream().filter(id -> !newCategoryIds.contains(id)).toList();
 
         if (!idsToDelete.isEmpty()) {
             mPCategoryRepository.deleteByProductIdAndCategoryIdIn(productId, idsToDelete);
@@ -38,12 +38,12 @@ public class ProductContentService {
         }
 
         /* === THÊM Category MỚI === */
-        Set<Long> existingIds = oldCategories.stream()
+        Set<Integer> existingIds = oldCategories.stream()
             .map(ProductCategory::getCategoryId)
             .collect(Collectors.toSet());
 
         List<ProductCategory> toInsert = new ArrayList<>();
-        for (Long newCategoryId : newCategoryIds) {
+        for (Integer newCategoryId : newCategoryIds) {
             if (existingIds.contains(newCategoryId)) {
                 continue;
             }

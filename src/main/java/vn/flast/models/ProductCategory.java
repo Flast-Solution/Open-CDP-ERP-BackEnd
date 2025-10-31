@@ -43,5 +43,5 @@ public class ProductCategory {
     private Long productId;
 
     @Column(name = "category_id")
-    private Long categoryId;
+    private Integer categoryId;
 }

@@ -62,7 +62,7 @@ public class ProviderController {
     }
 
     @PostMapping(value = "/delete")
-    public MyResponse<?> delete(@RequestParam Long id) {
+    public MyResponse<?> delete(@RequestParam Integer id) {
         providerService.delete(id);
         return  MyResponse.response("Ok");
     }

@@ -55,10 +55,10 @@ public class Product implements Cloneable {
     private Long id;
 
     @Column(name = "service_id")
-    private Long serviceId;
+    private Integer serviceId;
 
     @Column(name = "quality_in_stock")
-    private Long qualityInStock;
+    private Integer qualityInStock;
 
     @Column(name = "total_import_stock")
     private Integer totalImportStock;
@@ -70,7 +70,7 @@ public class Product implements Cloneable {
     private String code;
 
     @Column(name = "provider_id")
-    private Long providerId;
+    private Integer providerId;
 
     @Column(name = "unit")
     private String unit;
@@ -79,7 +79,7 @@ public class Product implements Cloneable {
     private Integer price;
 
     @Column(name = "price_ref")
-    private Long priceRef;
+    private Integer priceRef;
 
     @Column(name = "image")
     private String image;
@@ -88,7 +88,7 @@ public class Product implements Cloneable {
     private String social;
 
     @Column(name = "status")
-    private Long status;
+    private Integer status;
 
     @Column(name = "created_time")
     @CreationTimestamp
