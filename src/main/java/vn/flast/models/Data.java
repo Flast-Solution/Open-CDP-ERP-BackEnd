@@ -20,9 +20,6 @@ package vn.flast.models;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
@@ -94,7 +91,7 @@ public class Data implements Cloneable {
     private Long id;
 
     @Column(name = "service_id")
-    private Long serviceId;
+    private Integer serviceId;
 
     @Column(name = "level")
     private String level;

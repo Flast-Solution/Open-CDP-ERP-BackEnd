@@ -80,5 +80,5 @@ public class ProductContent {
 
     @Convert(converter = IntegerListJsonConverter.class)
     @Column(name = "category", columnDefinition = "TEXT")
-    private List<Long> listCategories = new ArrayList<>();
+    private List<Integer> listCategories = new ArrayList<>();
 }

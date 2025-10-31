@@ -20,9 +20,6 @@ package vn.flast.service;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +45,6 @@ public class ProviderService {
     }
 
     public Ipage<?> fetch(ProviderFilter filter){
-
         var et = EntityQuery.create(entityManager, Provider.class);
         et.like("name", filter.name())
             .stringEqualsTo("mobile", filter.mobile());
@@ -57,7 +53,7 @@ public class ProviderService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id){
+    public void delete(Integer id){
         var data = providerRepository.findById(id).orElseThrow(
             () -> new RuntimeException("Bản ghi không tồn tại !")
         );

@@ -139,9 +139,9 @@ public class WarehouseService {
         List<Product> products = productRepository.findByListId(pIds);
         Map<Long, Product> mProducts = MapUtils.toIdentityMap(products, Product::getId);
 
-        List<Long> providerIds = lists.stream().map(WarehouseProduct::getProviderId).toList();
+        List<Integer> providerIds = lists.stream().map(WarehouseProduct::getProviderId).toList();
         List<Provider> providers = providerRepository.findByListId(providerIds);
-        Map<Long, String> mProviders = MapUtils.mapKeyValue(providers, Provider::getId, Provider::getName);
+        Map<Integer, String> mProviders = MapUtils.mapKeyValue(providers, Provider::getId, Provider::getName);
 
         for(WarehouseProduct whProduct : lists) {
             whProduct.setSkuDetails(JsonUtils.Json2ListObject(whProduct.getSkuInfo(), SkuDetails.class));

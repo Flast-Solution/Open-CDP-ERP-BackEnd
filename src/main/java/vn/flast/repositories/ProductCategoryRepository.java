@@ -32,7 +32,7 @@ public interface ProductCategoryRepository extends JpaRepository<ProductCategory
     List<ProductCategory> findProductId(Long productId);
 
     @Modifying
-    void deleteByProductIdAndCategoryIdIn(Long productId, List<Long> categoryIds);
+    void deleteByProductIdAndCategoryIdIn(Long productId, List<Integer> categoryIds);
 
     @Modifying
     @Query("DELETE FROM ProductCategory pc WHERE pc.productId = :productId")
