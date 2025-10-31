@@ -20,15 +20,8 @@ package vn.flast.models;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -64,4 +57,9 @@ public class ProductSkusPrice {
 
     @Column(name = "price_import")
     private Long priceImport = 0L;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sku_id",referencedColumnName = "id", insertable=false, updatable=false)
+    private ProductSkus productSku;
 }

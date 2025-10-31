@@ -46,11 +46,9 @@ import vn.flast.searchs.ProductFilter;
 import vn.flast.service.SkuService;
 import vn.flast.utils.Common;
 import vn.flast.utils.CopyProperty;
+import vn.flast.utils.MapUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -147,12 +145,11 @@ public class ProductService {
             () -> new RuntimeException("Bản ghi không tồn tại !")
         );
 
-        SaleProduct mProduct = new SaleProduct();
-        CopyProperty.CopyIgnoreNull(entity, mProduct);
-        mProduct.setListProperties(productAttributedRepository.findByProduct(entity.getId()));
-        mProduct.setSkus(skuService.listProductSkuAndDetail(mProduct.getId()));
-        mProduct.setListOpenInfo(productPropertyRepository.findByProductId(entity.getId()));
-        return mProduct;
+        List<Product> toList = Collections.singletonList(entity);
+        List<SaleProduct> mProducts = generateProduct(toList);
+        return mProducts.stream().findFirst().orElseThrow(
+            () -> new RuntimeException("Generate product error !")
+        );
     }
 
     public Ipage<?> fetch(ProductFilter filter) {
@@ -166,34 +163,47 @@ public class ProductService {
 
         Ipage<Product> iPage = builder.toPage(PAGE * LIMIT, LIMIT, SORT);
         List<Product> lists = iPage.getEmbedded();
-
-        List<SaleProduct> mProducts = lists.stream().map(product -> {
-            SaleProduct saleProduct = new SaleProduct();
-            CopyProperty.CopyIgnoreNull(product.clone(), saleProduct);
-            saleProduct.setListProperties(productAttributedRepository.findByProduct(product.getId()));
-            saleProduct.setSkus(skuService.listProductSkuAndDetail(product.getId()));
-            saleProduct.setListOpenInfo(productPropertyRepository.findByProductId(product.getId()));
-
-            var warehouseEntities = warehouseRepository.findByProductId(product.getId());
-            warehouseEntities.forEach(WarehouseProduct::addSKUDetailFormSkuInfo);
-            saleProduct.setWarehouses(warehouseEntities);
-            return saleProduct;
-        }).toList();
+        List<SaleProduct> mProducts = generateProduct(lists);
         return Ipage.generator(LIMIT, builder.countItem(), PAGE, mProducts);
+    }
+
+    private List<SaleProduct> generateProduct(List<Product> lists) {
+        /* Map attributes */
+        List<Long> pIds = lists.stream().map(Product::getId).toList();
+        List<ProductAttributed> listAttrs = productAttributedRepository.findByProductIds(pIds);
+        Map<Long, List<ProductAttributed>> mAttrs = MapUtils.groupBy(listAttrs, ProductAttributed::getProductId);
+
+        /* Map Property */
+        List<ProductProperty> mP2P =  productPropertyRepository.findByProductIds(pIds);
+        Map<Long, List<ProductProperty>> mP2Ps = MapUtils.groupBy(mP2P, ProductProperty::getProductId);
+
+        /* Map Warehouse */
+        List<WarehouseProduct> warehouses = warehouseRepository.findByProductIds(pIds);
+        warehouses.forEach(WarehouseProduct::addSKUDetailFormSkuInfo);
+        Map<Long, List<WarehouseProduct>> mWPs = MapUtils.groupBy(warehouses, WarehouseProduct::getProductId);
+
+        /* Map SKUS */
+        List<ProductSkus> lSkus = skuService.listProductSkuAndDetail(pIds);
+        Map<Long, List<ProductSkus>> mSkus = MapUtils.groupBy(lSkus, ProductSkus::getProductId);
+
+        List<SaleProduct> results = new ArrayList<>();
+        for (Product product : lists) {
+            Long productId = product.getId();
+            SaleProduct saleProduct = new SaleProduct();
+            CopyProperty.CopyIgnoreNull(product, saleProduct);
+
+            saleProduct.setListProperties(MapUtils.getOrEmpty(mAttrs, productId));
+            saleProduct.setListOpenInfo(MapUtils.getOrEmpty(mP2Ps, productId));
+            saleProduct.setWarehouses(MapUtils.getOrEmpty(mWPs, productId));
+            saleProduct.setSkus(MapUtils.getOrEmpty(mSkus, productId));
+            results.add(saleProduct);
+        }
+        return results;
     }
 
     public List<SaleProduct> findByListId(List<Long> ids) {
         var lists = productsRepository.findByListId(ids);
-        List<SaleProduct> list = new ArrayList<>();
-        for (Product product : lists) {
-            SaleProduct saleProduct = new SaleProduct();
-            CopyProperty.CopyIgnoreNull(product.clone(), saleProduct);
-            saleProduct.setListProperties(productAttributedRepository.findByProduct(product.getId()));
-            saleProduct.setSkus(skuService.listProductSkuAndDetail(product.getId()));
-            saleProduct.setListOpenInfo(productPropertyRepository.findByProductId(product.getId()));
-            list.add(saleProduct);
-        }
-        return list;
+        return generateProduct(lists);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -224,7 +234,7 @@ public class ProductService {
             ProductSkus savedSku = productSkusRepository.save(skus);
             /* Save Price Range */
             skusPriceRepository.deleteBySkuId(savedSku.getId());
-            productSkus.getListPriceRange().forEach(priceRange -> {
+            productSkus.getSkuPrices().forEach(priceRange -> {
                 ProductSkusPrice price = new ProductSkusPrice();
                 CopyProperty.CopyIgnoreNull(priceRange, price);
                 price.setProductId(productId);

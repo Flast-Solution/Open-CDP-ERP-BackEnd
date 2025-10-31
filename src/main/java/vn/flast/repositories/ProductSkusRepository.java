@@ -20,18 +20,13 @@ package vn.flast.repositories;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.flast.models.ProductSkus;
-
 import java.util.List;
 
-public interface ProductSkusRepository extends JpaRepository<ProductSkus, Long> {
+public interface ProductSkusRepository extends GenericRepository<ProductSkus, Long> {
 
     @Query("FROM ProductSkus p WHERE p.productId = :id AND p.del = 0")
     List<ProductSkus> findByProductId(Long id);

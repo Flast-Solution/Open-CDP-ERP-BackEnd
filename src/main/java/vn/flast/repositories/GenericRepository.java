@@ -14,6 +14,8 @@ import vn.flast.pagination.Ipage;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @NoRepositoryBean
 public interface GenericRepository<T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
@@ -104,7 +106,8 @@ public interface GenericRepository<T, ID> extends JpaRepository<T, ID>, JpaSpeci
                 if (values == null || !values.iterator().hasNext()) {
                     return cb.conjunction();
                 }
-                return getFieldPath(root, fieldName).in(values);
+                List<?> list = StreamSupport.stream(values.spliterator(), false).collect(Collectors.toList());
+                return getFieldPath(root, fieldName).in(list);
             };
             addToCurrentScope(spec);
             return this;
@@ -198,10 +201,17 @@ public interface GenericRepository<T, ID> extends JpaRepository<T, ID>, JpaSpeci
                 for (String attribute : joinAttributes) {
                     joins.computeIfAbsent(attribute, key -> root.join(key, JoinType.LEFT));
                 }
-                /* Apply fetches */
+
+                /* Apply fetches - NHIỀU FETCH VỚI SET */
                 for (String attribute : fetchAttributes) {
                     root.fetch(attribute, JoinType.LEFT);
                 }
+
+                /* Bật DISTINCT khi có nhiều fetch (tránh Cartesian) */
+                if (!fetchAttributes.isEmpty() && Objects.nonNull(query)) {
+                    query.distinct(true);
+                }
+
                 /* Build predicates */
                 Predicate[] predicates = specifications.stream()
                     .map(spec -> spec.toPredicate(root, query, cb))

@@ -20,52 +20,28 @@ package vn.flast.service;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.flast.models.ProductSkus;
-import vn.flast.models.ProductSkusDetails;
-import vn.flast.models.ProductSkusPrice;
-import vn.flast.repositories.ProductSkusDetailsRepository;
-import vn.flast.repositories.ProductSkusPriceRepository;
 import vn.flast.repositories.ProductSkusRepository;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
+@RequiredArgsConstructor
 @Service
 public class SkuService {
 
-    @Autowired
-    private ProductSkusRepository productSkusRepository;
+    private final ProductSkusRepository productSkusRepository;
 
-    @Autowired
-    private ProductSkusDetailsRepository productSkusDetailsRepository;
-
-    @Autowired
-    private ProductSkusPriceRepository skusPriceRepository;
-
-    public List<ProductSkus> listProductSkuAndDetail(Long productId) {
-        List<ProductSkus> skusList = productSkusRepository.findByProductId(productId);
-        if (skusList.isEmpty()) {
-            return skusList;
+    public List<ProductSkus> listProductSkuAndDetail(List<Long> productIds) {
+        if(Objects.isNull(productIds) || productIds.isEmpty()) {
+            return new ArrayList<>();
         }
-
-        List<Long> skuIds = skusList.stream()
-            .map(ProductSkus::getId)
-            .collect(Collectors.toList());
-
-        Map<Long, List<ProductSkusDetails>> detailMap = productSkusDetailsRepository.findBySkusId(skuIds).stream()
-            .collect(Collectors.groupingBy(ProductSkusDetails::getSkuId));
-
-        Map<Long, List<ProductSkusPrice>> priceRangeMap = skusPriceRepository.findByListSkuId(skuIds).stream()
-            .collect(Collectors.groupingBy(ProductSkusPrice::getSkuId));
-
-        for (ProductSkus sku : skusList) {
-            sku.setSkuDetail(detailMap.getOrDefault(sku.getId(), Collections.emptyList()));
-            sku.setListPriceRange(priceRangeMap.getOrDefault(sku.getId(), Collections.emptyList()));
-        }
-        return skusList;
+        return productSkusRepository
+            .fetch("skuPrices")
+            .fetch("skuDetails")
+            .in("productId", productIds).findAll();
     }
 }

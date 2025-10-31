@@ -20,15 +20,8 @@ package vn.flast.models;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -55,11 +48,16 @@ public class ProductSkusDetails {
     private String value;
 
     @Column(name = "attributed_id")
-    private Long attributedId = 0l;
+    private Long attributedId = 0L;
 
     @Column(name = "attributed_value_id")
-    private Long attributedValueId =0l;
+    private Long attributedValueId = 0L;
 
     @Column(name = "del")
     private Integer del = 0;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sku_id",referencedColumnName = "id", insertable=false, updatable=false)
+    private ProductSkus productSku;
 }

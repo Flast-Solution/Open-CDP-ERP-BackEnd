@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  ProductPropertyRepository.java                                        */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,20 +20,17 @@ package vn.flast.repositories;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import vn.flast.models.ProductProperty;
-
 import java.util.List;
 
 public interface ProductPropertyRepository extends JpaRepository<ProductProperty, Integer> {
 
-    @Query("FROM ProductProperty p WHERE p.productId = :productId")
-    List<ProductProperty> findByProductId(Long productId);
+    @Query("FROM ProductProperty p WHERE p.productId IN :productIds")
+    List<ProductProperty> findByProductIds(@Param("productIds") List<Long> productIds);
 
     @Modifying
     @Query("DELETE FROM ProductProperty p WHERE p.productId = :productId")

@@ -21,6 +21,8 @@ package vn.flast.utils;
 /**************************************************************************/
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,5 +40,16 @@ public class MapUtils {
         Function<T, V> valueMapper
     ) {
         return collection.stream().collect(Collectors.toMap(keyMapper, valueMapper));
+    }
+
+    public static <T, K> Map<K, List<T>> groupBy(
+        Collection<T> collection,
+        Function<T, K> keyMapper
+    ) {
+        return collection.stream().collect(Collectors.groupingBy(keyMapper));
+    }
+
+    public static <K, V> List<V> getOrEmpty(Map<K, List<V>> map, K key) {
+        return map.getOrDefault(key, Collections.emptyList());
     }
 }

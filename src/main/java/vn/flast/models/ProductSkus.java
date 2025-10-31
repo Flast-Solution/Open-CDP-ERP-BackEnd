@@ -20,21 +20,17 @@ package vn.flast.models;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import vn.flast.entities.SkuAttributed;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "product_skus")
 @Entity
@@ -55,13 +51,16 @@ public class ProductSkus {
     @Column(name = "del")
     private Integer del = 0;
 
-    @Transient
-    private List<ProductSkusPrice> listPriceRange;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "productSku", fetch = FetchType.LAZY)
+    private Set<ProductSkusPrice> skuPrices = new HashSet<>();;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "productSku", fetch = FetchType.LAZY)
+    private Set<ProductSkusDetails> skuDetails = new HashSet<>();;
+
+    /* Chỉ sử dụng khi tạo Sản phẩm, Fetch thì không cần */
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<SkuAttributed> sku; /* Sử dụng khi tạo Sản phẩm, Fetch thì không cần */
-
-    @Transient
-    private List<ProductSkusDetails> skuDetail;
+    private List<SkuAttributed> sku = new ArrayList<>();
 }
