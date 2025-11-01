@@ -57,7 +57,7 @@ public class Common {
             .replace("*/", "*\\/");
     }
 
-    private static UserPrinciple getInfo() {
+    public static UserPrinciple getInfo() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserPrinciple userPrinciple) {
             return userPrinciple;

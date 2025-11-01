@@ -21,12 +21,13 @@ package vn.flast.domains.order;
 /**************************************************************************/
 
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vn.flast.controller.BaseController;
 import vn.flast.entities.order.OrderDetail;
 import vn.flast.entities.order.OrderResponse;
 import vn.flast.exception.ResourceNotFoundException;
@@ -49,8 +50,9 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service("orderService")
 @Log4j2
+@RequiredArgsConstructor
+@Service("orderService")
 public class OrderService  implements Publisher, Serializable {
 
     private EventDelegate eventDelegate;
@@ -58,26 +60,12 @@ public class OrderService  implements Publisher, Serializable {
     @Autowired
     private EntityManager entityManager;
 
-    @Autowired
-    private CustomerOrderRepository orderRepository;
-
-    @Autowired
-    private CustomerPersonalRepository customerRepository;
-
-    @Autowired
-    private CustomerContractRepository customerContractRepository;
-
-    @Autowired
-    private DataRepository dataRepository;
-
-    @Autowired
-    private CustomerOrderDetailRepository detailRepository;
-
-    @Autowired
-    private BaseController baseController;
-
-    @Autowired
-    private CustomerOrderStatusRepository statusOrderRepository;
+    private final CustomerOrderRepository orderRepository;
+    private final CustomerPersonalRepository customerRepository;
+    private final CustomerContractRepository customerContractRepository;
+    private final DataRepository dataRepository;
+    private final CustomerOrderDetailRepository detailRepository;
+    private final CustomerOrderStatusRepository statusOrderRepository;
 
     @Transactional(rollbackFor = Exception.class)
     public CustomerOrder saveOpportunity(OrderInput input) {
@@ -168,31 +156,47 @@ public class OrderService  implements Publisher, Serializable {
             i -> new ArrayList<>()
         ));
         var mStatus = detailRepository.findOrderGroupsByStatus(status);
-        Map<Integer, List<Long>> result = new HashMap<>();
-        for (Object[] row : mStatus) {
-            Integer item = ((Number) row[0]).intValue();
-            String json = (String) row[1];
-            List<Long> ids = JsonUtils.Json2ListObject(json, Long.class);
-            result.put(item, ids);
+        if (mStatus.isEmpty()) {
+            return mOrders;
         }
-        List<Long> allOrderIds = result.values()
+
+        /* Map [{status: 1, orderIds: [34012, 34011, ...]}] */
+        Map<Integer, List<Long>> statusToOrderIds = mStatus.stream().collect(Collectors.toMap(
+            row -> ((Number) row[0]).intValue(),
+            row -> JsonUtils.Json2ListObject((String) row[1], Long.class),
+            (existing, replacement) -> existing
+        ));
+        List<Long> allOrderIds = statusToOrderIds.values()
             .stream()
             .flatMap(List::stream)
             .toList();
-
-        List<CustomerOrder> orders = orderRepository.findByIds(allOrderIds);
-        var orderWithDetails = transformDetails(orders);
-        for (CustomerOrder order : orderWithDetails) {
-            List<Integer> detailStatus = order.getDetails().stream().map(CustomerOrderDetail::getStatus).toList();
-            for (Map.Entry<Integer, List<CustomerOrder>> entry : mOrders.entrySet()) {
-                Integer orderStatus = entry.getKey();
-                if(detailStatus.contains(orderStatus)) {
-                    mOrders.get(orderStatus).add(order);
-                }
-            }
+        if(allOrderIds.isEmpty()) {
+            return mOrders;
         }
-        transformDetails(orders);
+
+        List<CustomerOrder> orders = orderRepository
+            .fetch("details")
+            .in("id", allOrderIds)
+            .findAll();
+        for (CustomerOrder order : orders) {
+            List<Integer> detailStatus = order.getDetails().stream().map(CustomerOrderDetail::getStatus).toList();
+            addOrderToBuckets(order, detailStatus, mOrders);
+        }
         return mOrders;
+    }
+
+    /**
+     * Thêm một {@code order} vào các bucket tương ứng với {@code detailStatuses}.
+     * Nếu bucket không tồn tại (status không có trong map) thì bỏ qua.
+     *
+     * @param order          đơn hàng cần thêm
+     * @param detailStatuses danh sách trạng thái của các chi tiết đơn hàng
+     * @param statusBuckets  map: status → List<CustomerOrder>
+     */
+    private void addOrderToBuckets(CustomerOrder order, Collection<Integer> detailStatuses, Map<Integer, List<CustomerOrder>> statusBuckets) {
+        for (Integer status : detailStatuses) {
+            Optional.ofNullable(statusBuckets.get(status)).ifPresent(bucket -> bucket.add(order));
+        }
     }
 
     public List<CustomerOrder>fetchKanbanDetail(OrderFilter filter) {
@@ -211,10 +215,12 @@ public class OrderService  implements Publisher, Serializable {
         return transformDetails(orders);
     }
 
-    public Ipage<?>fetchList(OrderFilter filter) {
-        var sale = baseController.getInfo();
-        Integer page = filter.page();
-        var et = EntityQuery.create(entityManager, CustomerOrder.class);
+    public Ipage<CustomerOrder>fetchList(OrderFilter filter) {
+        var sale = Common.getInfo();
+        if(Objects.isNull(sale)) {
+            throw new RuntimeException("User not identity !");
+        }
+
         boolean isAdminOrManager = sale.getAuthorities().stream().anyMatch(auth
             -> auth.getAuthority().equals("ROLE_ADMIN") || auth.getAuthority().equals("ROLE_SALE_MANAGER")
         );
@@ -222,21 +228,22 @@ public class OrderService  implements Publisher, Serializable {
             (isAdminOrManager ? filter.saleId() : sale.getId()) :
             (isAdminOrManager ? null : sale.getId());
 
-        et.integerEqualsTo("userCreateId", userCreateId);
-        et.like("customerName", filter.customerName())
-            .integerEqualsTo("customerId", filter.customerId())
-            .integerEqualsTo("enterpriseId", filter.enterpriseId())
-            .integerEqualsTo("status", filter.status())
-            .integerEqualsTo("paidStatus", filter.paidStatus())
-            .stringEqualsTo("customerMobile", filter.customerPhone())
-            .stringEqualsTo("customerEmail", filter.customerEmail())
-            .stringEqualsTo("code", filter.code())
-            .stringEqualsTo("type", filter.type())
-            .addDescendingOrderBy("createdAt")
-            .setMaxResults(filter.limit())
-            .setFirstResult(page * filter.limit());
-        var lists = transformDetails(et.list());
-        return Ipage.generator(filter.limit(), et.count(), page, lists);
+        int PAGE = filter.page();
+        int LIMIT = 10;
+        Sort SORT = Sort.by(Sort.Direction.DESC, "createdAt");
+
+        GenericRepository.SpecificationBuilder<CustomerOrder> oRepoFactory = orderRepository.fetch("details")
+            .isEqual("userCreateId", userCreateId)
+            .isEqual("customerName", filter.customerName())
+            .isEqual("customerId", filter.customerId())
+            .isEqual("enterpriseId", filter.enterpriseId())
+            .isEqual("status", filter.status())
+            .isEqual("paidStatus", filter.paidStatus())
+            .isEqual("customerMobile", filter.customerPhone())
+            .isEqual("customerEmail", filter.customerEmail())
+            .isEqual("code", filter.code())
+            .isEqual("type", filter.type());
+        return oRepoFactory.toPage(PAGE * LIMIT, LIMIT, SORT);
     }
 
     public CustomerOrder completeOrder(Long id) {
@@ -258,11 +265,10 @@ public class OrderService  implements Publisher, Serializable {
         var newOrders = orders.stream().map(CustomerOrder::cloneNoDetail).toList();
         var orderIds = newOrders.stream().map(CustomerOrder::getId).toList();
         var details = detailRepository.fetchDetailOrdersId(orderIds);
+
+        Map<Long, List<CustomerOrderDetail>> mDetails = MapUtils.groupBy(details, CustomerOrderDetail::getCustomerOrderId);
         for( CustomerOrder order : newOrders ) {
-            var detailOfOrder = details.stream().filter(
-                d -> d.getCustomerOrderId().equals(order.getId())
-            );
-            order.setDetails(detailOfOrder.toList());
+            order.setDetails(MapUtils.getOrEmpty(mDetails, order.getId()));
         }
         return newOrders;
     }
