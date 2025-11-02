@@ -50,7 +50,7 @@ public class DataCare implements Cloneable {
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "customer_id")

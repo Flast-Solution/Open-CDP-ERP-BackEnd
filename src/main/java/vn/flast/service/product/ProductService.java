@@ -75,7 +75,7 @@ public class ProductService {
 
     @Transactional(rollbackFor = Exception.class)
     public Product saveProduct(SaleProduct input) {
-        if(input.getCode() == null) {
+        if(Objects.isNull(input.getCode())) {
             Provider provider = providerRepository.findById(input.getProviderId()).orElseThrow(
                 () -> new RuntimeException("Nhà cung cấp chưa tồn tại")
             );
@@ -216,9 +216,9 @@ public class ProductService {
         productsRepository.delete(data);
     }
 
-    public void saveSkuProduct(List<ProductSkus> input, Long productId){
+    private void saveSkuProduct(List<ProductSkus> skus, Long productId){
         var skuModels = productSkusRepository.findByProductId(productId);
-        Set<Long> inputSkuIds = input.stream()
+        Set<Long> inputSkuIds = skus.stream()
             .map(ProductSkus::getId)
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
@@ -227,13 +227,13 @@ public class ProductService {
             .filter(id -> !inputSkuIds.contains(id))
             .collect(Collectors.toList());
         if (!skusToDelete.isEmpty()) {
-            productSkusRepository.updateDelProductSkus(productId,skusToDelete);
+            productSkusRepository.updateDelProductSkus(productId, skusToDelete);
         }
-        input.forEach(productSkus -> {
-            ProductSkus skus = new ProductSkus();
-            CopyProperty.CopyIgnoreNull(productSkus, skus);
-            skus.setProductId(productId);
-            ProductSkus savedSku = productSkusRepository.save(skus);
+        skus.forEach(productSkus -> {
+            ProductSkus mSku = new ProductSkus();
+            CopyProperty.CopyIgnoreNull(productSkus, mSku);
+            mSku.setProductId(productId);
+            ProductSkus savedSku = productSkusRepository.save(mSku);
             /* Save Price Range */
             skusPriceRepository.deleteBySkuId(savedSku.getId());
             productSkus.getSkuPrices().forEach(priceRange -> {
