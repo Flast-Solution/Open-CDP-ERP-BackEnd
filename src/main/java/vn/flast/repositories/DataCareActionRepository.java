@@ -1,6 +1,6 @@
-package vn.flast.entities.lead;
+package vn.flast.repositories;
 /**************************************************************************/
-/*  LeadCareFilter.java                                                   */
+/*  DataCareActionRepository.java                                         */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,38 +20,8 @@ package vn.flast.entities.lead;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import vn.flast.utils.NumberUtils;
-import java.util.Date;
-import java.util.Objects;
+import org.springframework.data.jpa.repository.JpaRepository;
+import vn.flast.models.DataCareAction;
 
-@Setter @Getter
-@NoArgsConstructor
-public class LeadCareFilter {
-
-    private String phone;
-    private String cause;
-    private Integer userId;
-    private Integer customerId;
-    private Boolean asList;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date from;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date to;
-
-    private Integer page;
-    private String type;
-
-    public Integer page() {
-        return NumberUtils.isNull(page) ? 0 : (page - 1);
-    }
-
-    public Boolean getAsList() {
-        return Objects.nonNull(asList) && asList;
-    }
+public interface DataCareActionRepository extends JpaRepository<DataCareAction, Integer> {
 }

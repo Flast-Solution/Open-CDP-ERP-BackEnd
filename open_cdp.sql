@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: open_cdp
 -- ------------------------------------------------------
--- Server version	8.0.42
+-- Server version	8.0.43
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -184,7 +184,7 @@ CREATE TABLE `customer_activities` (
 
 LOCK TABLES `customer_activities` WRITE;
 /*!40000 ALTER TABLE `customer_activities` DISABLE KEYS */;
-INSERT INTO `customer_activities` VALUES (590,24,2,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-07-27 10:27:31','2025-07-24 10:27:31','2025-07-24 10:27:31'),(591,24,2,'Gửi Báo giá',NULL,0,'2025-07-29 10:27:31','2025-07-24 10:27:31','2025-07-24 10:27:31'),(592,24,2,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-07-31 10:27:31','2025-07-24 10:27:31','2025-07-24 10:27:31'),(593,27,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 09:59:59','2025-08-27 09:59:59','2025-08-27 09:59:59'),(594,27,1638,'Gửi Báo giá',NULL,0,'2025-09-01 09:59:59','2025-08-27 09:59:59','2025-08-27 09:59:59'),(595,27,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 09:59:59','2025-08-27 09:59:59','2025-08-27 09:59:59'),(596,28,1639,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:00:53','2025-08-27 10:00:53','2025-08-27 10:00:53'),(597,28,1639,'Gửi Báo giá',NULL,0,'2025-09-01 10:00:53','2025-08-27 10:00:53','2025-08-27 10:00:53'),(598,28,1639,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:00:53','2025-08-27 10:00:53','2025-08-27 10:00:53'),(599,29,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:01:36','2025-08-27 10:01:36','2025-08-27 10:01:36'),(600,29,1638,'Gửi Báo giá',NULL,0,'2025-09-01 10:01:36','2025-08-27 10:01:36','2025-08-27 10:01:36'),(601,29,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:01:36','2025-08-27 10:01:36','2025-08-27 10:01:36'),(602,30,1639,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:02:18','2025-08-27 10:02:18','2025-08-27 10:02:18'),(603,30,1639,'Gửi Báo giá',NULL,0,'2025-09-01 10:02:18','2025-08-27 10:02:18','2025-08-27 10:02:18'),(604,30,1639,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:02:18','2025-08-27 10:02:18','2025-08-27 10:02:18'),(605,31,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:03:14','2025-08-27 10:03:14','2025-08-27 10:03:14'),(606,31,1638,'Gửi Báo giá',NULL,0,'2025-09-01 10:03:14','2025-08-27 10:03:14','2025-08-27 10:03:14'),(607,31,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:03:14','2025-08-27 10:03:14','2025-08-27 10:03:14'),(608,32,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:36:20','2025-08-27 14:36:20','2025-08-27 14:36:20'),(609,32,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:36:20','2025-08-27 14:36:20','2025-08-27 14:36:20'),(610,32,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:36:20','2025-08-27 14:36:20','2025-08-27 14:36:20'),(611,33,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:37:08','2025-08-27 14:37:08','2025-08-27 14:37:08'),(612,33,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:37:08','2025-08-27 14:37:08','2025-08-27 14:37:08'),(613,33,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:37:08','2025-08-27 14:37:08','2025-08-27 14:37:08'),(614,34,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:37:48','2025-08-27 14:37:48','2025-08-27 14:37:48'),(615,34,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:37:48','2025-08-27 14:37:48','2025-08-27 14:37:48'),(616,34,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:37:48','2025-08-27 14:37:48','2025-08-27 14:37:48'),(617,35,1643,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:38:39','2025-08-27 14:38:39','2025-08-27 14:38:39'),(618,35,1643,'Gửi Báo giá',NULL,0,'2025-09-01 14:38:39','2025-08-27 14:38:39','2025-08-27 14:38:39'),(619,35,1643,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:38:39','2025-08-27 14:38:39','2025-08-27 14:38:39'),(620,36,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:39:41','2025-08-27 14:39:41','2025-08-27 14:39:41'),(621,36,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:39:41','2025-08-27 14:39:41','2025-08-27 14:39:41'),(622,36,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:39:41','2025-08-27 14:39:41','2025-08-27 14:39:41'),(623,37,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:40:19','2025-08-27 14:40:19','2025-08-27 14:40:19'),(624,37,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:40:19','2025-08-27 14:40:19','2025-08-27 14:40:19'),(625,37,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:40:19','2025-08-27 14:40:19','2025-08-27 14:40:19'),(626,38,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:41:14','2025-08-27 14:41:14','2025-08-27 14:41:14'),(627,38,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:41:14','2025-08-27 14:41:14','2025-08-27 14:41:14'),(628,38,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:41:14','2025-08-27 14:41:14','2025-08-27 14:41:14'),(629,39,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:41:51','2025-08-27 14:41:51','2025-08-27 14:41:51'),(630,39,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:41:51','2025-08-27 14:41:51','2025-08-27 14:41:51'),(631,39,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:41:51','2025-08-27 14:41:51','2025-08-27 14:41:51'),(632,40,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:42:42','2025-08-27 14:42:42','2025-08-27 14:42:42'),(633,40,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:42:42','2025-08-27 14:42:42','2025-08-27 14:42:42'),(634,40,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:42:42','2025-08-27 14:42:42','2025-08-27 14:42:42'),(635,41,1639,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:43:14','2025-08-27 14:43:14','2025-08-27 14:43:14'),(636,41,1639,'Gửi Báo giá',NULL,0,'2025-09-01 14:43:14','2025-08-27 14:43:14','2025-08-27 14:43:14'),(637,41,1639,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:43:14','2025-08-27 14:43:14','2025-08-27 14:43:14'),(638,42,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:43:37','2025-08-27 14:43:37','2025-08-27 14:43:37'),(639,42,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:43:37','2025-08-27 14:43:37','2025-08-27 14:43:37'),(640,42,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:43:37','2025-08-27 14:43:37','2025-08-27 14:43:37'),(641,43,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:44:04','2025-08-27 14:44:04','2025-08-27 14:44:04'),(642,43,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:44:04','2025-08-27 14:44:04','2025-08-27 14:44:04'),(643,43,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:44:04','2025-08-27 14:44:04','2025-08-27 14:44:04');
+INSERT INTO `customer_activities` VALUES (590,22,2,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-07-27 10:27:31','2025-07-24 10:27:31','2025-07-24 10:27:31'),(591,22,2,'Gửi Báo giá',NULL,0,'2025-07-29 10:27:31','2025-07-24 10:27:31','2025-07-24 10:27:31'),(592,22,2,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-07-31 10:27:31','2025-07-24 10:27:31','2025-07-24 10:27:31'),(593,27,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 09:59:59','2025-08-27 09:59:59','2025-08-27 09:59:59'),(594,27,1638,'Gửi Báo giá',NULL,0,'2025-09-01 09:59:59','2025-08-27 09:59:59','2025-08-27 09:59:59'),(595,27,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 09:59:59','2025-08-27 09:59:59','2025-08-27 09:59:59'),(596,28,1639,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:00:53','2025-08-27 10:00:53','2025-08-27 10:00:53'),(597,28,1639,'Gửi Báo giá',NULL,0,'2025-09-01 10:00:53','2025-08-27 10:00:53','2025-08-27 10:00:53'),(598,28,1639,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:00:53','2025-08-27 10:00:53','2025-08-27 10:00:53'),(599,29,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:01:36','2025-08-27 10:01:36','2025-08-27 10:01:36'),(600,29,1638,'Gửi Báo giá',NULL,0,'2025-09-01 10:01:36','2025-08-27 10:01:36','2025-08-27 10:01:36'),(601,29,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:01:36','2025-08-27 10:01:36','2025-08-27 10:01:36'),(602,30,1639,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:02:18','2025-08-27 10:02:18','2025-08-27 10:02:18'),(603,30,1639,'Gửi Báo giá',NULL,0,'2025-09-01 10:02:18','2025-08-27 10:02:18','2025-08-27 10:02:18'),(604,30,1639,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:02:18','2025-08-27 10:02:18','2025-08-27 10:02:18'),(605,31,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 10:03:14','2025-08-27 10:03:14','2025-08-27 10:03:14'),(606,31,1638,'Gửi Báo giá',NULL,0,'2025-09-01 10:03:14','2025-08-27 10:03:14','2025-08-27 10:03:14'),(607,31,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 10:03:14','2025-08-27 10:03:14','2025-08-27 10:03:14'),(608,32,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:36:20','2025-08-27 14:36:20','2025-08-27 14:36:20'),(609,32,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:36:20','2025-08-27 14:36:20','2025-08-27 14:36:20'),(610,32,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:36:20','2025-08-27 14:36:20','2025-08-27 14:36:20'),(611,33,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:37:08','2025-08-27 14:37:08','2025-08-27 14:37:08'),(612,33,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:37:08','2025-08-27 14:37:08','2025-08-27 14:37:08'),(613,33,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:37:08','2025-08-27 14:37:08','2025-08-27 14:37:08'),(614,34,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:37:48','2025-08-27 14:37:48','2025-08-27 14:37:48'),(615,34,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:37:48','2025-08-27 14:37:48','2025-08-27 14:37:48'),(616,34,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:37:48','2025-08-27 14:37:48','2025-08-27 14:37:48'),(617,35,1643,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:38:39','2025-08-27 14:38:39','2025-08-27 14:38:39'),(618,35,1643,'Gửi Báo giá',NULL,0,'2025-09-01 14:38:39','2025-08-27 14:38:39','2025-08-27 14:38:39'),(619,35,1643,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:38:39','2025-08-27 14:38:39','2025-08-27 14:38:39'),(620,36,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:39:41','2025-08-27 14:39:41','2025-08-27 14:39:41'),(621,36,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:39:41','2025-08-27 14:39:41','2025-08-27 14:39:41'),(622,36,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:39:41','2025-08-27 14:39:41','2025-08-27 14:39:41'),(623,37,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:40:19','2025-08-27 14:40:19','2025-08-27 14:40:19'),(624,37,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:40:19','2025-08-27 14:40:19','2025-08-27 14:40:19'),(625,37,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:40:19','2025-08-27 14:40:19','2025-08-27 14:40:19'),(626,38,1644,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:41:14','2025-08-27 14:41:14','2025-08-27 14:41:14'),(627,38,1644,'Gửi Báo giá',NULL,0,'2025-09-01 14:41:14','2025-08-27 14:41:14','2025-08-27 14:41:14'),(628,38,1644,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:41:14','2025-08-27 14:41:14','2025-08-27 14:41:14'),(629,39,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:41:51','2025-08-27 14:41:51','2025-08-27 14:41:51'),(630,39,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:41:51','2025-08-27 14:41:51','2025-08-27 14:41:51'),(631,39,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:41:51','2025-08-27 14:41:51','2025-08-27 14:41:51'),(632,40,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:42:42','2025-08-27 14:42:42','2025-08-27 14:42:42'),(633,40,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:42:42','2025-08-27 14:42:42','2025-08-27 14:42:42'),(634,40,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:42:42','2025-08-27 14:42:42','2025-08-27 14:42:42'),(635,41,1639,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:43:14','2025-08-27 14:43:14','2025-08-27 14:43:14'),(636,41,1639,'Gửi Báo giá',NULL,0,'2025-09-01 14:43:14','2025-08-27 14:43:14','2025-08-27 14:43:14'),(637,41,1639,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:43:14','2025-08-27 14:43:14','2025-08-27 14:43:14'),(638,42,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:43:37','2025-08-27 14:43:37','2025-08-27 14:43:37'),(639,42,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:43:37','2025-08-27 14:43:37','2025-08-27 14:43:37'),(640,42,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:43:37','2025-08-27 14:43:37','2025-08-27 14:43:37'),(641,43,1638,'Tư vấn lại 3 ngày chưa Cơ Hộ',NULL,0,'2025-08-30 14:44:04','2025-08-27 14:44:04','2025-08-27 14:44:04'),(642,43,1638,'Gửi Báo giá',NULL,0,'2025-09-01 14:44:04','2025-08-27 14:44:04','2025-08-27 14:44:04'),(643,43,1638,'Gọi điện 7 ngày chưa ra đơn',NULL,0,'2025-09-03 14:44:04','2025-08-27 14:44:04','2025-08-27 14:44:04');
 /*!40000 ALTER TABLE `customer_activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -585,7 +585,7 @@ CREATE TABLE `data` (
 
 LOCK TABLES `data` WRITE;
 /*!40000 ALTER TABLE `data` DISABLE KEYS */;
-INSERT INTO `data` VALUES (32,1,NULL,'Administrator','Hà Nội',5,'Hà NAm','0974260540','manvtk32@gmail.com',NULL,NULL,2,NULL,'admin','2025-07-18 03:14:46','2025-07-18 03:14:46',7,0,NULL,776,'Hộp carton lạnh',NULL,NULL),(33,1,NULL,'Administrator','Hà Nội',5,'Hà NAm','0974260540','manvtk32@gmail.com',NULL,NULL,2,NULL,'admin','2025-07-18 04:06:15','2025-07-18 04:06:15',7,2,NULL,776,'Hộp carton lạnh',NULL,NULL),(34,1,NULL,'Administrator','Hà Nội',1,'Pép DiaLa','098545555',NULL,NULL,NULL,67,NULL,'LongHuu','2025-07-20 07:09:50','2025-07-21 23:11:40',7,2,NULL,774,'Hộp Mềm',NULL,NULL),(35,2,NULL,'Administrator','Tuyên Quang',1,'Bal Fing','0984554774','',NULL,NULL,67,NULL,'LongHuu','2025-07-24 10:27:31','2025-08-16 23:00:43',0,0,NULL,774,'Hộp Mềm',1,NULL),(36,1,NULL,'Hữu Long','Hà Nội',4,'Đình Sang','0939905789',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 09:59:59','2025-08-27 09:59:59',0,1,NULL,774,'Hộp Mềm',NULL,NULL),(37,1,NULL,'Hữu Long','Hồ Chí Minh',7,'Anh Họ Trương','0921235555',NULL,NULL,NULL,1639,NULL,'HungDB','2025-08-27 10:00:53','2025-08-27 10:00:53',0,1,NULL,771,'Hộp cứng',NULL,NULL),(38,1,NULL,'Hữu Long','Đắk Lắk',3,'Công ty TNHH MTV Tân Nguyên','0935775665',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 10:01:36','2025-08-27 10:22:45',7,1,NULL,771,'Hộp cứng',NULL,NULL),(39,1,NULL,'Hữu Long','Bắc Ninh',11,'Hộ kinh doanh Lê Đăng Tuấn','0915626539',NULL,NULL,NULL,1639,NULL,'HungDB','2025-08-27 10:02:18','2025-08-27 10:08:42',7,1,NULL,771,'Hộp cứng',NULL,NULL),(40,1,NULL,'Hữu Long','Hà Nội',11,'Công ty TNHH Ngũ cốc Trường Thọ','0913601308',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 10:03:14','2025-08-27 10:04:21',7,1,NULL,774,'Hộp Mềm',NULL,NULL),(41,1,NULL,'Hữu Long','Hà Nội',2,'Phương Trần','0364560000',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:36:19','2025-08-27 14:36:19',0,1,NULL,771,'Hộp cứng',NULL,NULL),(42,1,NULL,'Hữu Long','Đà Nẵng',2,'Thái Hằng Tấm','0973401051',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:37:08','2025-08-27 14:37:08',0,1,NULL,771,'Hộp cứng',NULL,NULL),(43,1,NULL,'Hữu Long','Hải Phòng',1,'Bich Phuong','0983492667',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:37:48','2025-08-27 14:37:48',0,1,NULL,774,'Hộp Mềm',NULL,NULL),(44,1,NULL,'Hữu Long','Hồ Chí Minh',1,'Công ty TNHH Dược liệu Việt Kết','0936557750',NULL,NULL,NULL,1643,NULL,'AgentA2A','2025-08-27 14:38:38','2025-08-27 14:38:38',0,1,NULL,776,'Hộp carton lạnh',NULL,NULL),(45,1,NULL,'Hữu Long','Hồ Chí Minh',1,'Khương Lưu','0939495119',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:39:41','2025-08-27 14:39:41',0,1,NULL,771,'Hộp cứng',NULL,NULL),(46,1,NULL,'Hữu Long','Hồ Chí Minh',4,'MyHanh Foods','0968790097',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:40:19','2025-08-27 14:40:19',0,1,NULL,771,'Hộp cứng',NULL,NULL),(47,1,NULL,'Hữu Long','Đồng Nai',3,'Tiênn Tiênn','0963061490',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:41:14','2025-08-27 14:41:14',0,1,NULL,771,'Hộp cứng',NULL,NULL),(48,1,NULL,'Hữu Long','Hưng Yên',4,'Mai Như Ý','0917978991',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:41:51','2025-08-27 14:41:51',0,1,NULL,771,'Hộp cứng',NULL,NULL),(49,1,NULL,'Hữu Long','Hà Nội',3,'Nguyễn Mai Phương Uyên','0933069505',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:42:42','2025-08-27 14:42:42',0,1,NULL,769,'Hộp Mềm',NULL,NULL),(50,1,NULL,'Hữu Long','Hà Nội',4,'Sala Factory','0384609470',NULL,NULL,NULL,1639,NULL,'HungDB','2025-08-27 14:43:14','2025-08-27 14:43:14',0,1,NULL,771,'Hộp cứng',NULL,NULL),(51,1,NULL,'Hữu Long','Hà Nội',4,'Chị Uyên','0976265571',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:43:37','2025-08-28 02:37:31',7,1,NULL,774,'Hộp Mềm',NULL,NULL),(52,1,NULL,'Hữu Long','Hải Phòng',1,'Thu Thao Thu Bui','0979046332',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:44:04','2025-08-27 15:46:35',7,1,NULL,771,'Hộp cứng',NULL,NULL);
+INSERT INTO `data` VALUES (32,1,NULL,'Administrator','Hà Nội',5,'Hà NAm','0974260540','manvtk32@gmail.com',NULL,NULL,2,NULL,'admin','2025-07-18 03:14:46','2025-07-18 03:14:46',7,0,NULL,776,'Hộp carton lạnh',NULL,NULL),(33,1,NULL,'Administrator','Hà Nội',5,'Hà NAm','0974260540','manvtk32@gmail.com',NULL,NULL,2,NULL,'admin','2025-07-18 04:06:15','2025-07-18 04:06:15',7,2,NULL,776,'Hộp carton lạnh',NULL,NULL),(34,1,NULL,'Administrator','Hà Nội',1,'Pép DiaLa','098545555',NULL,NULL,NULL,67,NULL,'LongHuu','2025-07-20 07:09:50','2025-07-21 23:11:40',7,2,NULL,774,'Hộp Mềm',NULL,NULL),(35,2,NULL,'Administrator','Tuyên Quang',1,'Bal Fing','0984554774','',NULL,NULL,67,NULL,'LongHuu','2025-07-24 10:27:31','2025-08-16 23:00:43',0,0,NULL,774,'Hộp Mềm',1,NULL),(36,1,NULL,'Hữu Long','Hà Nội',4,'Đình Sang','0939905789',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 09:59:59','2025-11-01 11:21:45',0,1,NULL,774,'Hộp Mềm',1,NULL),(37,1,NULL,'Hữu Long','Hồ Chí Minh',7,'Anh Họ Trương','0921235555',NULL,NULL,NULL,1639,NULL,'HungDB','2025-08-27 10:00:53','2025-11-02 11:56:27',0,1,NULL,771,'Hộp cứng',1,NULL),(38,1,NULL,'Hữu Long','Đắk Lắk',3,'Công ty TNHH MTV Tân Nguyên','0935775665',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 10:01:36','2025-08-27 10:22:45',7,1,NULL,771,'Hộp cứng',NULL,NULL),(39,1,NULL,'Hữu Long','Bắc Ninh',11,'Hộ kinh doanh Lê Đăng Tuấn','0915626539',NULL,NULL,NULL,1639,NULL,'HungDB','2025-08-27 10:02:18','2025-08-27 10:08:42',7,1,NULL,771,'Hộp cứng',NULL,NULL),(40,1,NULL,'Hữu Long','Hà Nội',11,'Công ty TNHH Ngũ cốc Trường Thọ','0913601308',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 10:03:14','2025-08-27 10:04:21',7,1,NULL,774,'Hộp Mềm',NULL,NULL),(41,1,NULL,'Hữu Long','Hà Nội',2,'Phương Trần','0364560000',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:36:19','2025-11-02 04:36:21',0,1,NULL,771,'Hộp cứng',1,NULL),(42,1,NULL,'Hữu Long','Đà Nẵng',2,'Thái Hằng Tấm','0973401051',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:37:08','2025-11-02 09:18:35',0,1,NULL,771,'Hộp cứng',1,NULL),(43,1,NULL,'Hữu Long','Hải Phòng',1,'Bich Phuong','0983492667',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:37:48','2025-08-27 14:37:48',0,1,NULL,774,'Hộp Mềm',NULL,NULL),(44,1,NULL,'Hữu Long','Hồ Chí Minh',1,'Công ty TNHH Dược liệu Việt Kết','0936557750',NULL,NULL,NULL,1643,NULL,'AgentA2A','2025-08-27 14:38:38','2025-08-27 14:38:38',0,1,NULL,776,'Hộp carton lạnh',NULL,NULL),(45,1,NULL,'Hữu Long','Hồ Chí Minh',1,'Khương Lưu','0939495119',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:39:41','2025-08-27 14:39:41',0,1,NULL,771,'Hộp cứng',NULL,NULL),(46,1,NULL,'Hữu Long','Hồ Chí Minh',4,'MyHanh Foods','0968790097',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:40:19','2025-08-27 14:40:19',0,1,NULL,771,'Hộp cứng',NULL,NULL),(47,1,NULL,'Hữu Long','Đồng Nai',3,'Tiênn Tiênn','0963061490',NULL,NULL,NULL,1644,NULL,'MoNT','2025-08-27 14:41:14','2025-08-27 14:41:14',0,1,NULL,771,'Hộp cứng',NULL,NULL),(48,1,NULL,'Hữu Long','Hưng Yên',4,'Mai Như Ý','0917978991',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:41:51','2025-08-27 14:41:51',0,1,NULL,771,'Hộp cứng',NULL,NULL),(49,1,NULL,'Hữu Long','Hà Nội',3,'Nguyễn Mai Phương Uyên','0933069505',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:42:42','2025-08-27 14:42:42',0,1,NULL,769,'Hộp Mềm',NULL,NULL),(50,1,NULL,'Hữu Long','Hà Nội',4,'Sala Factory','0384609470',NULL,NULL,NULL,1639,NULL,'HungDB','2025-08-27 14:43:14','2025-08-27 14:43:14',0,1,NULL,771,'Hộp cứng',NULL,NULL),(51,1,NULL,'Hữu Long','Hà Nội',4,'Chị Uyên','0976265571',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:43:37','2025-08-28 02:37:31',7,1,NULL,774,'Hộp Mềm',NULL,NULL),(52,1,NULL,'Hữu Long','Hải Phòng',1,'Thu Thao Thu Bui','0979046332',NULL,NULL,NULL,1638,NULL,'ThanhTrung','2025-08-27 14:44:04','2025-08-27 15:46:35',7,1,NULL,771,'Hộp cứng',NULL,NULL);
 /*!40000 ALTER TABLE `data` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -615,6 +615,7 @@ DROP TABLE IF EXISTS `data_care`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `data_care` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
   `user_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '',
   `customer_id` int unsigned DEFAULT '0',
   `object_id` int unsigned DEFAULT '0',
@@ -629,7 +630,7 @@ CREATE TABLE `data_care` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `customer_id` (`customer_id`) USING BTREE,
   KEY `data_id_Idx` (`object_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -638,8 +639,54 @@ CREATE TABLE `data_care` (
 
 LOCK TABLES `data_care` WRITE;
 /*!40000 ALTER TABLE `data_care` DISABLE KEYS */;
-INSERT INTO `data_care` VALUES (9,'Administrator',24,35,'lead','Chờ duyệt','{\"issues\":[\"product\"],\"rating\":9,\"satisfactionPercent\":90,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Khách đợi 2 ngày chưa liên lạc lại, cần liên hệ trong hôm nay.','cao',0,'2025-08-16 23:58:44','2025-08-16 23:58:44'),(10,'Administrator',22,34002,'cohoi','Đang trao đổi ','{\"issues\":[\"product\",\"service\"],\"rating\":9,\"satisfactionPercent\":95,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Đang trình phương án, sự kiến tuần sau sẽ chốt, yêu cầu sale tương tác thêm','cao',0,'2025-08-17 05:22:07','2025-08-17 05:22:07'),(11,'Administrator',23,34007,'order','Tư vấn lại','{\"issues\":[],\"rating\":9,\"satisfactionPercent\":80,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Sale chưa tư vấn đầy đủ thông tin, đơn hàng chậm tiến độ','thap',0,'2025-08-17 05:52:47','2025-08-17 05:52:47');
+INSERT INTO `data_care` VALUES (9,'Lô Giấy','Administrator',24,35,'lead','Chờ duyệt','{\"issues\":[\"product\"],\"rating\":9,\"satisfactionPercent\":90,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Khách đợi 2 ngày chưa liên lạc lại, cần liên hệ trong hôm nay.','cao',0,'2025-08-16 23:58:44','2025-08-16 23:58:44'),(10,'Lô Giấy','Administrator',22,34002,'cohoi','Đang trao đổi ','{\"issues\":[\"product\",\"service\"],\"rating\":9,\"satisfactionPercent\":95,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Đang trình phương án, sự kiến tuần sau sẽ chốt, yêu cầu sale tương tác thêm','cao',0,'2025-08-17 05:22:07','2025-08-17 05:22:07'),(11,'Lô Giấy','Administrator',23,34007,'order','Tư vấn lại','{\"issues\":[],\"rating\":9,\"satisfactionPercent\":80,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Sale chưa tư vấn đầy đủ thông tin, đơn hàng chậm tiến độ','thap',0,'2025-08-17 05:52:47','2025-08-17 05:52:47'),(12,'Lô Giấy','Administrator',27,36,'lead','Chi phí cao ','{\"issues\":[],\"rating\":7,\"satisfactionPercent\":null,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Khách tìm được đơn vị khác giá tốt hơn.','cao',0,'2025-11-01 11:21:45','2025-11-01 11:21:45'),(13,'Lô Giấy','Administrator',32,41,'lead','Không chia sẻ','{\"issues\":[\"product\",\"service\"],\"rating\":8,\"satisfactionPercent\":null,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Khahs không hài lòng nhưng không chia sẻ thông tin !','cao',0,'2025-11-02 04:36:21','2025-11-02 04:36:21'),(21,'Hộp cứng','Administrator',33,42,'lead','Hoãn','{\"issues\":[\"service\",\"needResolution\"],\"rating\":7,\"satisfactionPercent\":70,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Thứ 3 tuần sau liên hệ lại ','cao',0,'2025-11-02 09:39:16','2025-11-02 09:39:16'),(22,'Hộp cứng','Administrator',28,37,'lead','Chờ duyệt','{\"issues\":[\"product\"],\"rating\":9,\"satisfactionPercent\":90,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Đang chờ duyệt từ Marketing, dự kiến sau 2 tuần nữa sẽ có kết quả.','trungbinh',0,'2025-11-02 11:56:27','2025-11-02 11:56:27');
 /*!40000 ALTER TABLE `data_care` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `delete_data_care_action` AFTER DELETE ON `data_care` FOR EACH ROW BEGIN
+    DELETE FROM data_care_action
+    WHERE data_care_id = OLD.id;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `data_care_action`
+--
+
+DROP TABLE IF EXISTS `data_care_action`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `data_care_action` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `sso_id` varchar(255) DEFAULT NULL,
+  `data_care_id` int unsigned DEFAULT '0',
+  `content` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `data_care_id` (`data_care_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_care_action`
+--
+
+LOCK TABLES `data_care_action` WRITE;
+/*!40000 ALTER TABLE `data_care_action` DISABLE KEYS */;
+INSERT INTO `data_care_action` VALUES (14,'Administrator',21,NULL,'2025-11-02 09:39:16');
+/*!40000 ALTER TABLE `data_care_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -665,7 +712,8 @@ CREATE TABLE `data_collection` (
   `mobile` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `receive_time_new` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `channel` varchar(100) DEFAULT NULL,
-  `product` varchar(255) DEFAULT NULL,
+  `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `product_id` bigint DEFAULT NULL,
   `note` text,
   `email` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -1135,8 +1183,9 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `content_id` int DEFAULT '0',
   `service_id` int DEFAULT '0',
   `quality_in_stock` int DEFAULT '0',
   `total_import_stock` int DEFAULT '0',
@@ -1160,7 +1209,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (749,'FLJAJBCK',1,NULL,NULL,'Logo',10008,'Ấn phẩm',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(769,'FLJANWCH',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(770,'FLJAORXZ',1,NULL,NULL,'Áo Phông',10008,'Bộ',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-02-20 10:37:45','2025-10-29 08:37:50'),(771,'FLJANEMR',1,NULL,NULL,'Hộp cứng',10008,'SET',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-02-18 04:51:50','2025-10-29 08:37:50'),(772,'MRJAHOMD',10014,NULL,NULL,'MRPO Duy Tân',10009,'Phòng',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(773,'FLJAXZGI',1,NULL,NULL,'Hộp yến sào Nam Bắc',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(774,'FLJAVXHD',1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-03-06 01:42:33','2025-10-29 08:37:50'),(775,'FLJAIJLP',1,NULL,NULL,'Sách giáo khoa toán 1',10008,'Quyển',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-05-07 10:39:27','2025-10-29 08:37:50'),(776,'FLLYYEECPM',1,NULL,NULL,'Hộp carton lạnh',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(777,'FLJAPFLK',1,NULL,NULL,'Bánh Chocopie',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:36:33');
+INSERT INTO `product` VALUES (749,'FLJAJBCK',0,1,NULL,NULL,'Logo',10008,'Ấn phẩm',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(769,'FLJANWCH',0,1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(770,'FLJAORXZ',0,1,NULL,NULL,'Áo Phông',10008,'Bộ',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-02-20 10:37:45','2025-10-29 08:37:50'),(771,'FLJANEMR',0,1,NULL,NULL,'Hộp cứng',10008,'SET',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-02-18 04:51:50','2025-10-29 08:37:50'),(772,'MRJAHOMD',0,10014,NULL,NULL,'MRPO Duy Tân',10009,'Phòng',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(773,'FLJAXZGI',0,1,NULL,NULL,'Hộp yến sào Nam Bắc',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(774,'FLJAVXHD',0,1,NULL,NULL,'Hộp Mềm',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-03-06 01:42:33','2025-10-29 08:37:50'),(775,'FLJAIJLP',0,1,NULL,NULL,'Sách giáo khoa toán 1',10008,'Quyển',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,'2025-05-07 10:39:27','2025-10-29 08:37:50'),(776,'FLLYYEECPM',0,1,NULL,NULL,'Hộp carton lạnh',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:37:50'),(777,'FLJAPFLK',0,1,NULL,NULL,'Bánh Chocopie',10008,'Hộp',NULL,NULL,'/uploads/product/102025/in-hop-cung-nam-cham-canh-dung-yen-sao-yen-an-00002_1741937279.png',NULL,1,NULL,'2025-10-29 08:36:33');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1202,7 +1251,7 @@ DROP TABLE IF EXISTS `product_category`;
 CREATE TABLE `product_category` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category_id` int NOT NULL,
-  `product_id` bigint NOT NULL,
+  `product_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx-cmp-category_id` (`category_id`),
   KEY `idx-cmp-product_id` (`product_id`)
@@ -1290,7 +1339,7 @@ CREATE TABLE `product_material` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `material_id` bigint NOT NULL,
   `material_unit` varchar(100) DEFAULT NULL,
-  `product_id` bigint NOT NULL,
+  `product_id` int unsigned NOT NULL,
   `sku_id` int NOT NULL,
   `quantity` decimal(15,2) NOT NULL,
   `width` decimal(15,2) DEFAULT NULL,
@@ -1717,7 +1766,7 @@ CREATE TABLE `user_kpi` (
   `month` int NOT NULL DEFAULT '0',
   `year` int DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1025 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1026 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1726,7 +1775,7 @@ CREATE TABLE `user_kpi` (
 
 LOCK TABLES `user_kpi` WRITE;
 /*!40000 ALTER TABLE `user_kpi` DISABLE KEYS */;
-INSERT INTO `user_kpi` VALUES (1021,'[{\"name\":\"doanhso\",\"target\":200000000,\"current\":0},{\"name\":\"sql\",\"target\":300,\"current\":0}]',67,8,2025),(1022,'[{\"name\":\"doanhso\",\"target\":500000000,\"current\":0},{\"name\":\"sql\",\"target\":500,\"current\":0}]',1638,8,2025),(1023,'[{\"name\":\"trafic\",\"target\":1000000,\"current\":0},{\"name\":\"sql\",\"target\":50,\"current\":0}]',1639,8,2025),(1024,'[{\"name\":\"sql\",\"target\":300,\"current\":0},{\"name\":\"trafic\",\"target\":200000,\"current\":0}]',1643,8,2025);
+INSERT INTO `user_kpi` VALUES (1021,'[{\"name\":\"doanhso\",\"target\":200000000,\"current\":0},{\"name\":\"sql\",\"target\":300,\"current\":0}]',67,8,2025),(1022,'[{\"name\":\"doanhso\",\"target\":500000000,\"current\":0},{\"name\":\"sql\",\"target\":500,\"current\":0}]',1638,8,2025),(1023,'[{\"name\":\"trafic\",\"target\":1000000,\"current\":0},{\"name\":\"sql\",\"target\":50,\"current\":0}]',1639,8,2025),(1024,'[{\"name\":\"sql\",\"target\":300,\"current\":0},{\"name\":\"trafic\",\"target\":200000,\"current\":0}]',1643,8,2025),(1025,'[{\"name\":\"doanhso\",\"target\":100000000,\"current\":0},{\"name\":\"sql\",\"target\":200,\"current\":0}]',67,10,2025);
 /*!40000 ALTER TABLE `user_kpi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1964,6 +2013,10 @@ LOCK TABLES `warehouse_stock` WRITE;
 INSERT INTO `warehouse_stock` VALUES (1,'Kho Trung Hòa','100m2','0345223731','Trung Hòa, Cầu Giấy, Hà Nội',1),(4,'Kho Trung Hòa 3','100m2','0345223732','Trung Hòa, Cầu Giấy, Hà Nội',1),(5,'kho Nam Từ Liêm','200m','0963484761','Nam Từ Liêm Hà Nội 2',1),(6,'kho Nam Từ Liêm 4','300m','0963484766','Nam Từ Liêm Hà Nội 4',1),(7,'kho Nam Từ Liêm5','300m','0963484764','Nam Từ Liêm Hà Nội 5',1);
 /*!40000 ALTER TABLE `warehouse_stock` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'open_cdp'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1974,4 +2027,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-31 11:02:47
+-- Dump completed on 2025-11-02 19:13:37

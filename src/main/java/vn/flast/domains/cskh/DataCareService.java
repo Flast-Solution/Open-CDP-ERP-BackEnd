@@ -24,27 +24,23 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.flast.controller.BaseController;
 import vn.flast.domains.order.OrderService;
-import vn.flast.entities.lead.CSLeadData;
 import vn.flast.entities.lead.LeadCareFilter;
 import vn.flast.entities.lead.NoOrderFilter;
-import vn.flast.models.CustomerOrder;
-import vn.flast.models.Data;
-import vn.flast.models.DataCare;
+import vn.flast.models.*;
 import vn.flast.pagination.Ipage;
 import vn.flast.repositories.CustomerPersonalRepository;
 import vn.flast.repositories.DataCareRepository;
 import vn.flast.repositories.DataRepository;
+import vn.flast.repositories.GenericRepository;
 import vn.flast.service.DataService;
 import vn.flast.utils.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -59,42 +55,19 @@ public class DataCareService extends BaseController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Ipage<?> fetch(LeadCareFilter filter) {
+    public Ipage<DataCare> fetch(LeadCareFilter filter) {
 
         int PAGE =  filter.page();
-        int LIMIT = filter.getLimit();
+        int LIMIT = 10;
 
-        String initQuery = "FROM `data_care`";
-        SqlBuilder sqlBuilder = SqlBuilder.init(initQuery);
-        sqlBuilder.addStringEquals("object_type", filter.getType());
-        sqlBuilder.addStringEquals("cause", filter.getCause());
-        sqlBuilder.addDateBetween("created_at", filter.getFrom(), filter.getTo());
-        sqlBuilder.addOrderByDesc("id");
-        String finalQuery = sqlBuilder.builder();
-
-        var countQuery = entityManager.createNativeQuery(sqlBuilder.countQueryString());
-        Long count = sqlBuilder.countOrSumQuery(countQuery);
-
-        var nativeQuery = entityManager.createNativeQuery("SELECT a.* " + finalQuery, DataCare.class);
-        nativeQuery.setMaxResults(LIMIT);
-        nativeQuery.setFirstResult(LIMIT * PAGE);
-        if(count.equals(0L)) {
-            return Ipage.empty();
-        }
-
-        var listDataCare = EntityQuery.<DataCare>getListOfNativeQuery(nativeQuery);
-        var listIds = listDataCare.stream().map(DataCare::getObjectId).toList();
-        var leads = dataRepository.fetchDataIds(listIds);
-        Map<Long, Data> mLeads = MapUtils.toIdentityMap(leads, Data::getId);
-
-        List<CSLeadData> listRet = new ArrayList<>();
-        for(DataCare cs : listDataCare) {
-            var csLeadData = new CSLeadData();
-            csLeadData.setDataCare(cs);
-            csLeadData.setData(mLeads.get(cs.getObjectId()));
-            listRet.add(csLeadData);
-        }
-        return new Ipage<>(filter.getLimit(), Math.toIntExact(count), PAGE, listRet);
+        Sort SORT = Sort.by(Sort.Direction.DESC, "id");
+        GenericRepository.SpecificationBuilder<DataCare> builder = dataCareRepository
+            .fetch("active")
+            .isEqual("objectType", filter.getType())
+            .isEqual("cause", filter.getCause())
+            .isEqual("customerId", filter.getCustomerId())
+            .between("inTime", filter.getFrom(), filter.getTo());
+        return builder.toPage(PAGE * LIMIT, LIMIT, SORT);
     }
 
     public Ipage<Data> fetchLead3Day(NoOrderFilter filter){
@@ -125,27 +98,39 @@ public class DataCareService extends BaseController {
         return Ipage.generator(LIMIT, count, filter.page(), listData);
     }
 
-    public DataCare update3Day(DataCare dataCare) {
-        if(Optional.ofNullable(dataCare.getObjectId()).isEmpty()) {
+    @Transactional
+    public DataCare update3Day(DataCare input) {
+        if(Optional.ofNullable(input.getObjectId()).isEmpty()) {
             throw new RuntimeException("Lead id does not exist .!");
         }
-        var lead = dataRepository.findById(dataCare.getObjectId()).orElseThrow(
+        var lead = dataRepository.findById(input.getObjectId()).orElseThrow(
             () -> new RuntimeException("No lead exists .!")
         );
-        var model = new DataCare();
-        CopyProperty.CopyIgnoreNull(dataCare, model);
-        model.setObjectId(lead.getId());
-        model.setObjectType(DataCare.OBJECT_TYPE_LEAD);
-        model.setUserName(getInfo().getSsoId());
-        model.setInformation(JsonUtils.toJson(dataCare.getLead3Day()));
+        var dataCare = new DataCare();
+        CopyProperty.CopyIgnoreNull(input, dataCare);
+
+        dataCare.setObjectId(lead.getId());
+        dataCare.setObjectType(DataCare.OBJECT_TYPE_LEAD);
+        dataCare.setUserName(getInfo().getSsoId());
 
         var customer = customerRepository.findByPhone(lead.getCustomerMobile());
-        model.setCustomerId(Optional.ofNullable(customer.getId()).orElse(0L));
-        dataCareRepository.save(model);
+        dataCare.setCustomerId(Optional.ofNullable(customer).map(CustomerPersonal::getId).orElse(0L));
 
+        if (Objects.nonNull(input.getActive())) {
+            DataCareAction active = new DataCareAction();
+            CopyProperty.CopyIgnoreNull(input.getActive(), active);
+            active.setSsoId(getInfo().getSsoId());
+            active.setDataCare(dataCare);
+            dataCare.setActive(active);
+        }
+
+        dataCare.setTitle(lead.getProductName());
+        dataCareRepository.save(dataCare);
+
+        /* Cập nhật lead */
         lead.setPreSaleCall(Data.PreSaleCall.DA_LIEN_HE.value());
         dataRepository.save(lead);
-        return model;
+        return dataCare;
     }
 
     public Ipage<CustomerOrder> fetchCoHoiOrder(NoOrderFilter filter){
@@ -188,7 +173,7 @@ public class DataCareService extends BaseController {
         CopyProperty.CopyIgnoreNull(dataCare, model);
         model.setObjectId(order.getId());
         model.setUserName(getInfo().getSsoId());
-        model.setInformation(JsonUtils.toJson(dataCare.getLead3Day()));
+        model.setTitle(order.getCode());
 
         var customer = customerRepository.findById(order.getCustomerId()).orElseThrow(
             () -> new RuntimeException("")

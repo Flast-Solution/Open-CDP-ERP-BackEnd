@@ -19,8 +19,8 @@ package vn.flast.controller;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,16 +29,18 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.flast.entities.MyResponse;
 import vn.flast.models.DataCollection;
 import vn.flast.pagination.Ipage;
+import vn.flast.repositories.ProductRepository;
 import vn.flast.searchs.DataCollectionFilter;
 import vn.flast.service.DataCollectionService;
 
-@RestController
 @Slf4j
+@RequiredArgsConstructor
+@RestController
 @RequestMapping("/data-collection")
 public class DataCollectionController extends BaseController {
 
-    @Autowired
-    private DataCollectionService dataCollectionService;
+    private final DataCollectionService dataCollectionService;
+    private final ProductRepository productRepository;
 
     @GetMapping("/fetch")
     public MyResponse<?> getData(DataCollectionFilter filter){
@@ -47,7 +49,12 @@ public class DataCollectionController extends BaseController {
     }
 
     @PostMapping("/save")
-    public MyResponse<?> saveData(@RequestBody DataCollection dataCollection){
+    public MyResponse<?> saveData(@RequestBody DataCollection dataCollection) {
+        var product = productRepository.findById(dataCollection.getProductId()).orElseThrow(
+            () -> new RuntimeException("")
+        );
+
+        dataCollection.setProductName(product.getName());
         var entity = dataCollectionService.save(dataCollection);
         return MyResponse.response(entity, "Đã cập nhật bộ sưu tập dữ liệu thô !");
     }

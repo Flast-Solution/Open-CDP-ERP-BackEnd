@@ -1,6 +1,6 @@
-package vn.flast.entities.lead;
+package vn.flast.models;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  DataCareAction.java                                                   */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,13 +20,38 @@ package vn.flast.entities.lead;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.flast.models.Data;
-import vn.flast.models.DataCare;
+import org.hibernate.annotations.CreationTimestamp;
+import java.util.Date;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
+@Entity
+@Table(name = "data_care_action")
+@NoArgsConstructor
 @Getter @Setter
-public class CSLeadData {
+public class DataCareAction {
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true)
+    private Integer id;
+
+    @Column(name = "sso_id")
+    private String ssoId;
+
+    @Column(name = "content")
+    private String content;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date inTime;
+
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "data_care_id", referencedColumnName = "id")
     private DataCare dataCare;
-    private Data data;
 }

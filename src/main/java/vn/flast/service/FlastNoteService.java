@@ -20,9 +20,6 @@ package vn.flast.service;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.flast.models.Data;

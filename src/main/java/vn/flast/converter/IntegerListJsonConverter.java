@@ -1,5 +1,24 @@
 package vn.flast.converter;
-
+/**************************************************************************/
+/*  IntegerListJsonConverter.java                                         */
+/**************************************************************************/
+/*                       Tệp này là một phần của:                         */
+/*                             Open CDP                                   */
+/*                        https://flast.vn                                */
+/**************************************************************************/
+/* Bản quyền (c) 2025 - này thuộc về các cộng tác viên Flast Solution     */
+/* (xem AUTHORS.md).                                                      */
+/* Bản quyền (c) 2024-2025 Long Huu, Thành Trung                          */
+/*                                                                        */
+/* Bạn được quyền sử dụng phần mềm này miễn phí cho bất kỳ mục đích nào,  */
+/* bao gồm sao chép, sửa đổi, phân phối, bán lại…                         */
+/*                                                                        */
+/* Chỉ cần giữ nguyên thông tin bản quyền và nội dung giấy phép này trong */
+/* các bản sao.                                                           */
+/*                                                                        */
+/* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
+/* có trách nghiệm                                                        */
+/**************************************************************************/
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
@@ -17,7 +36,7 @@ public class IntegerListJsonConverter implements AttributeConverter<List<Integer
     @Override
     public String convertToDatabaseColumn(List<Integer> attribute) {
         if (attribute == null || attribute.isEmpty()) {
-            return "[]";                     // luôn trả về mảng rỗng, không null
+            return "[]";
         }
         try {
             return mapper.writeValueAsString(attribute);

@@ -85,8 +85,11 @@ public class DataCollection {
     @Column(name = "channel")
     private Integer channel;
 
+    @Column(name = "product_name")
+    private String productName;
+
     @Column(name = "product_id")
-    private Integer productId;
+    private Long productId;
 
     @Column(name = "email")
     private String email;

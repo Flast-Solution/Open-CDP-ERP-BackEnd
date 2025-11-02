@@ -20,14 +20,15 @@ package vn.flast.models;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import vn.flast.entities.lead.Lead3Day;
+import vn.flast.converter.FeedbackRequestJsonConverter;
+import vn.flast.entities.customer.FeedbackRequest;
 
 import java.util.Date;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -49,6 +50,9 @@ public class DataCare implements Cloneable {
     @Column(name = "user_name")
     private String userName;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "customer_id")
     private Long customerId;
 
@@ -58,8 +62,9 @@ public class DataCare implements Cloneable {
     @Column(name = "object_type")
     private String objectType;
 
-    @Column(name = "information")
-    private String information ;
+    @Convert(converter = FeedbackRequestJsonConverter.class)
+    @Column(name = "information", columnDefinition = "TEXT")
+    private FeedbackRequest information;
 
     @Column(name = "cause")
     private String cause;
@@ -78,6 +83,10 @@ public class DataCare implements Cloneable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @JsonManagedReference
+    @OneToOne(mappedBy = "dataCare", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private DataCareAction active;
+
     @Override
     public DataCare clone() {
         try {
@@ -86,8 +95,4 @@ public class DataCare implements Cloneable {
             return null;
         }
     }
-
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Lead3Day lead3Day;
 }

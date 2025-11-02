@@ -27,9 +27,12 @@ public class CsController extends BaseController {
         return MyResponse.response(data);
     }
 
-    @GetMapping("/ready")
-    public MyResponse<?> ready(LeadCareFilter filter){
+    @GetMapping("/fetch")
+    public MyResponse<?> fetch(LeadCareFilter filter){
         var data = dataCareService.fetch(filter);
+        if(filter.getAsList()) {
+            return MyResponse.response(data.getEmbedded());
+        }
         return MyResponse.response(data);
     }
 

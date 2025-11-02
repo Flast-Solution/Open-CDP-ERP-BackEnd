@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  DataCareRepository.java                                               */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,17 +20,8 @@ package vn.flast.repositories;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import vn.flast.models.DataCare;
 
-import java.util.List;
+public interface DataCareRepository extends GenericRepository<DataCare, Integer> {
 
-public interface DataCareRepository extends JpaRepository<DataCare, Integer> {
-
-    @Query("FROM DataCare d WHERE d.customerId = :customerId")
-    List<DataCare> findByCustomerId(Integer customerId);
 }

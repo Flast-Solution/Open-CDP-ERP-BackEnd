@@ -1,6 +1,6 @@
-package vn.flast.entities.lead;
+package vn.flast.converter;
 /**************************************************************************/
-/*  LeadCareFilter.java                                                   */
+/*  FeedbackRequestJsonConverter.java                                     */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,39 +19,39 @@ package vn.flast.entities.lead;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+import vn.flast.entities.customer.FeedbackRequest;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import vn.flast.utils.NumberUtils;
-import java.util.Date;
-import java.util.Objects;
+@Converter(autoApply = false)
+public class FeedbackRequestJsonConverter implements AttributeConverter<FeedbackRequest, String> {
 
-@Setter @Getter
-@NoArgsConstructor
-public class LeadCareFilter {
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final TypeReference<FeedbackRequest> TYPE_REF = new TypeReference<>() {};
 
-    private String phone;
-    private String cause;
-    private Integer userId;
-    private Integer customerId;
-    private Boolean asList;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date from;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date to;
-
-    private Integer page;
-    private String type;
-
-    public Integer page() {
-        return NumberUtils.isNull(page) ? 0 : (page - 1);
+    @Override
+    public String convertToDatabaseColumn(FeedbackRequest attribute) {
+        if (attribute == null) {
+            return null;
+        }
+        try {
+            return mapper.writeValueAsString(attribute);
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot convert FeedbackRequest to JSON", e);
+        }
     }
 
-    public Boolean getAsList() {
-        return Objects.nonNull(asList) && asList;
+    @Override
+    public FeedbackRequest convertToEntityAttribute(String dbData) {
+        if (dbData == null || dbData.trim().isEmpty() || "null".equalsIgnoreCase(dbData)) {
+            return null;
+        }
+        try {
+            return mapper.readValue(dbData, TYPE_REF);
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot convert JSON to FeedbackRequest", e);
+        }
     }
 }
