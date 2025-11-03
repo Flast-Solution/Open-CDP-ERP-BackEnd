@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  ProductSkusPriceRepository.java                                       */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,29 +19,15 @@ package vn.flast.repositories;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-
-
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import vn.flast.models.ProductSkusDetails;
 import vn.flast.models.ProductSkusPrice;
 import java.util.List;
 
 public interface ProductSkusPriceRepository extends JpaRepository<ProductSkusPrice, Integer> {
 
-    @Query("FROM ProductSkusPrice p WHERE p.productId = :productId")
-    List<ProductSkusPrice> findByProduct(Long productId);
-
-    @Query("FROM ProductSkusPrice p WHERE p.skuId = :skuId")
-    List<ProductSkusPrice> findBySkuId(Long skuId);
-
-    @Query("FROM ProductSkusPrice p WHERE p.skuId IN (:skuId)")
-    List<ProductSkusPrice> findByListSkuId(List<Long> skuId);
-
     @Modifying
-    @Query("DELETE FROM ProductSkusPrice p WHERE p.skuId = :skuId")
-    void deleteBySkuId(Long skuId);
+    @Query("DELETE FROM ProductSkusPrice p WHERE p.skuId IN :skuIds")
+    void deleteBySkuId(List<Long> skuIds);
 }

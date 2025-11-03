@@ -28,10 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.flast.entities.MyResponse;
 import vn.flast.models.DataCollection;
+import vn.flast.models.Product;
 import vn.flast.pagination.Ipage;
 import vn.flast.repositories.ProductRepository;
 import vn.flast.searchs.DataCollectionFilter;
 import vn.flast.service.DataCollectionService;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,11 +52,10 @@ public class DataCollectionController extends BaseController {
 
     @PostMapping("/save")
     public MyResponse<?> saveData(@RequestBody DataCollection dataCollection) {
-        var product = productRepository.findById(dataCollection.getProductId()).orElseThrow(
-            () -> new RuntimeException("")
-        );
-
-        dataCollection.setProductName(product.getName());
+        if(Objects.nonNull(dataCollection.getProductId())) {
+            var model = productRepository.findById(dataCollection.getProductId());
+            dataCollection.setProductName(model.map(Product::getName).orElse(""));
+        }
         var entity = dataCollectionService.save(dataCollection);
         return MyResponse.response(entity, "Đã cập nhật bộ sưu tập dữ liệu thô !");
     }

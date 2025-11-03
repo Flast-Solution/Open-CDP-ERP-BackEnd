@@ -1,6 +1,6 @@
 package vn.flast.models;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  ProductSkusPrice.java                                                 */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -37,7 +37,8 @@ public class ProductSkusPrice {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "sku_id")
+    /* Chỉ để đọc */
+    @Column(name = "sku_id", insertable = false, updatable = false)
     private Long skuId;
 
     @Column(name = "product_id")
@@ -60,6 +61,6 @@ public class ProductSkusPrice {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sku_id",referencedColumnName = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "sku_id",referencedColumnName = "id")
     private ProductSkus productSku;
 }

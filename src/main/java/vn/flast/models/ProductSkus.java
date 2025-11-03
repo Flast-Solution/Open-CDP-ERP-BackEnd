@@ -53,11 +53,11 @@ public class ProductSkus {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "productSku", fetch = FetchType.LAZY)
-    private Set<ProductSkusPrice> skuPrices = new HashSet<>();;
+    private Set<ProductSkusPrice> skuPrices = new HashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "productSku", fetch = FetchType.LAZY)
-    private Set<ProductSkusDetails> skuDetails = new HashSet<>();;
+    private Set<ProductSkusDetails> skuDetails = new HashSet<>();
 
     /* Chỉ sử dụng khi tạo Sản phẩm, Fetch thì không cần */
     @Transient

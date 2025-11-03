@@ -75,7 +75,13 @@ public class ProductService {
 
     @Transactional(rollbackFor = Exception.class)
     public Product saveProduct(SaleProduct input) {
-        if(Objects.isNull(input.getCode())) {
+
+        Product nProduct = Optional.of(input)
+            .map(SaleProduct::getId)
+            .flatMap(productsRepository::findById)
+            .orElseGet(Product::new);
+
+        if(Objects.isNull(nProduct.getCode())) {
             Provider provider = providerRepository.findById(input.getProviderId()).orElseThrow(
                 () -> new RuntimeException("Nhà cung cấp chưa tồn tại")
             );
@@ -85,12 +91,11 @@ public class ProductService {
                 String random = Common.getAlphaNumericString(8, false);
                 code = (twoLetterService + random).toUpperCase();
             } while (productsRepository.findByCode(code) != null);
-            input.setCode(code);
+            nProduct.setCode(code);
         }
 
-        Product product = new Product();
-        CopyProperty.CopyIgnoreNull(input, product);
-        var data = productsRepository.save(product);
+        CopyProperty.CopyIgnoreNull(input, nProduct);
+        productsRepository.save(nProduct);
 
         /* Save Content */
         ProductContent content = input.getContent();
@@ -99,7 +104,7 @@ public class ProductService {
         }
 
         /* Save Attributed */
-        productAttributedRepository.deleteByProductId(data.getId());
+        productAttributedRepository.deleteByProductId(nProduct.getId());
         List<ProductAttributed> productAttributedList = input.getListProperties().stream().flatMap(
             property -> property.getPropertyValueId().stream().map(
             propertyValueId -> {
@@ -110,7 +115,7 @@ public class ProductService {
                     () -> new RuntimeException("không tồn tại bản ghi")
                 );
                 ProductAttributed productAttributed = new ProductAttributed();
-                productAttributed.setProductId(data.getId());
+                productAttributed.setProductId(nProduct.getId());
                 productAttributed.setAttributedId(property.getAttributedId());
                 productAttributed.setAttributedValueId(propertyValueId);
                 productAttributed.setName(attributed.getName());
@@ -121,20 +126,21 @@ public class ProductService {
         productAttributedRepository.saveAll(productAttributedList);
 
         /* Save Property */
-        productPropertyRepository.deleteByProductId(data.getId());
+        productPropertyRepository.deleteByProductId(nProduct.getId());
         List<ProductProperty> productPropertyList = input.getListOpenInfo().stream().map(productProperty -> {
             ProductProperty property = new ProductProperty();
             CopyProperty.CopyIgnoreNull(productProperty, property);
             property.setName(productProperty.getName());
             property.setValue(productProperty.getValue());
-            property.setProductId(data.getId());
+            property.setProductId(nProduct.getId());
             return property;
         }).toList();
         productPropertyRepository.saveAll(productPropertyList);
 
         /* Save SKU */
-        saveSkuProduct(input.getSkus(), data.getId());
-        return data;
+        saveSkuProduct(input.getSkus(), nProduct.getId());
+        /* clone để bỏ qua images và content */
+        return nProduct.clone();
     }
 
     public SaleProduct findById(Long id) {
@@ -216,8 +222,8 @@ public class ProductService {
         productsRepository.delete(data);
     }
 
-    private void saveSkuProduct(List<ProductSkus> skus, Long productId){
-        var skuModels = productSkusRepository.findByProductId(productId);
+    private void saveSkuProduct(List<ProductSkus> skus, Long productId) {
+        List<ProductSkus> skuModels = productSkusRepository.findByProductId(productId);
         Set<Long> inputSkuIds = skus.stream()
             .map(ProductSkus::getId)
             .filter(Objects::nonNull)
@@ -227,50 +233,67 @@ public class ProductService {
             .filter(id -> !inputSkuIds.contains(id))
             .collect(Collectors.toList());
         if (!skusToDelete.isEmpty()) {
-            productSkusRepository.updateDelProductSkus(productId, skusToDelete);
+            productSkusRepository.delProductSkus(productId, skusToDelete);
         }
+
+        List<Long> attrIds = skus.stream()
+            .map(ProductSkus::getSku)
+            .flatMap(List::stream)
+            .map(SkuAttributed::getAttributedId)
+            .filter(Objects::nonNull)
+            .toList();
+        List<Attributed> lAttr = attributedRepository.findAllById(attrIds);
+        Map<Long, Attributed> mAttrs = MapUtils.toIdentityMap(lAttr, Attributed::getId);
+
+        List<Long> attrValueIds = skus.stream()
+            .map(ProductSkus::getSku)
+            .flatMap(List::stream)
+            .map(SkuAttributed::getAttributedValueId)
+            .filter(Objects::nonNull)
+            .toList();
+        List<AttributedValue> lAttrValue = attributedValueRepository.findAllById(attrValueIds);
+        Map<Long, AttributedValue> mAttrValues = MapUtils.toIdentityMap(lAttrValue, AttributedValue::getId);
+
         skus.forEach(productSkus -> {
             ProductSkus mSku = new ProductSkus();
             CopyProperty.CopyIgnoreNull(productSkus, mSku);
             mSku.setProductId(productId);
             ProductSkus savedSku = productSkusRepository.save(mSku);
+
             /* Save Price Range */
-            skusPriceRepository.deleteBySkuId(savedSku.getId());
+            skusPriceRepository.deleteBySkuId(skusToDelete);
             productSkus.getSkuPrices().forEach(priceRange -> {
                 ProductSkusPrice price = new ProductSkusPrice();
                 CopyProperty.CopyIgnoreNull(priceRange, price);
                 price.setProductId(productId);
-                price.setSkuId(savedSku.getId());
                 price.setPrice(priceRange.getPrice());
+                price.setProductSku(savedSku);
                 skusPriceRepository.save(price);
             });
-            var skuDetailOld = productSkusDetailsRepository.findBySkuId(savedSku.getId());
-            Set<Integer> inputSkuDetailIds = productSkus.getSku().stream()
-                .map(SkuAttributed::getId)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-            List<Integer> skusDetailToDelete = skuDetailOld.stream()
-                .map(ProductSkusDetails::getId)
-                .filter(id -> !inputSkuDetailIds.contains(id))
-                .collect(Collectors.toList());
-            if (!skusToDelete.isEmpty()) {
-                productSkusDetailsRepository.updateDelProductSkus(productId, skusDetailToDelete);
-            }
+
+            /* Save new Sku Details */
+            productSkusDetailsRepository.delProductSkus(skusToDelete);
+            List<ProductSkusDetails> skuDetails = new ArrayList<>();
             productSkus.getSku().forEach(sku -> {
-                ProductSkusDetails skusDetails = new ProductSkusDetails();
-                Attributed attributed = attributedRepository.findById(sku.getAttributedId()).orElseThrow(
-                    () -> new RuntimeException("không tồn tại bản ghi")
-                );
-                AttributedValue attributedValue = attributedValueRepository.findById(sku.getAttributedValueId()).orElseThrow(
-                    () -> new RuntimeException("không tồn tại bản ghi")
-                );
-                CopyProperty.CopyIgnoreNull(sku, skusDetails);
-                skusDetails.setSkuId(savedSku.getId());
-                skusDetails.setProductId(productId);
-                skusDetails.setName(attributed.getName());
-                skusDetails.setValue(attributedValue.getValue());
-                productSkusDetailsRepository.save(skusDetails);
+                ProductSkusDetails skusDetail = new ProductSkusDetails();
+                Attributed attributed = mAttrs.get(sku.getAttributedId());
+                if(Objects.isNull(attributed)) {
+                    throw new RuntimeException("không tồn tại attributed");
+                }
+
+                AttributedValue attributedValue = mAttrValues.get(sku.getAttributedValueId());
+                if(Objects.isNull(attributedValue)) {
+                    throw new RuntimeException("không tồn tại attributedValue");
+                }
+
+                CopyProperty.CopyIgnoreNull(sku, skusDetail);
+                skusDetail.setProductId(productId);
+                skusDetail.setName(attributed.getName());
+                skusDetail.setValue(attributedValue.getValue());
+                skusDetail.setProductSku(savedSku);
+                skuDetails.add(skusDetail);
             });
+            productSkusDetailsRepository.saveAll(skuDetails);
         });
     }
 }

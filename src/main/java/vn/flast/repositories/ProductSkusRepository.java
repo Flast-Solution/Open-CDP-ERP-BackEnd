@@ -32,6 +32,6 @@ public interface ProductSkusRepository extends GenericRepository<ProductSkus, Lo
     List<ProductSkus> findByProductId(Long id);
 
     @Modifying
-    @Query("UPDATE ProductSkus p SET p.del = 1 WHERE p.productId = :productId AND p.id IN :ids")
-    void updateDelProductSkus(@Param("productId") Long productId, @Param("ids") List<Long> ids);
+    @Query("DELETE FROM ProductSkus p WHERE p.productId = :productId AND p.id IN :ids")
+    void delProductSkus(@Param("productId") Long productId, @Param("ids") List<Long> ids);
 }

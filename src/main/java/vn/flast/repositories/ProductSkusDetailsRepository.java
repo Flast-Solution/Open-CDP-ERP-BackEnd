@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  ProductSkusDetailsRepository.java                                     */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,13 +20,9 @@ package vn.flast.repositories;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import vn.flast.models.ProductSkusDetails;
 import java.util.List;
 
@@ -39,6 +35,6 @@ public interface ProductSkusDetailsRepository extends JpaRepository<ProductSkusD
     List<ProductSkusDetails> findBySkusId(List<Long> skusId);
 
     @Modifying
-    @Query("UPDATE ProductSkusDetails p SET p.del = 1 WHERE p.productId = :productId AND p.id IN :ids")
-    void updateDelProductSkus(@Param("productId") Long productId, @Param("ids") List<Integer> ids);
+    @Query("DELETE FROM ProductSkusDetails p WHERE p.skuId IN :skuIds")
+    void delProductSkus(List<Long> skuIds);
 }
