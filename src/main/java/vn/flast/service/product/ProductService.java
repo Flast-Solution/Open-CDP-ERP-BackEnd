@@ -254,7 +254,7 @@ public class ProductService {
         List<AttributedValue> lAttrValue = attributedValueRepository.findAllById(attrValueIds);
         Map<Long, AttributedValue> mAttrValues = MapUtils.toIdentityMap(lAttrValue, AttributedValue::getId);
 
-        skus.forEach(productSkus -> {
+        for (ProductSkus productSkus : skus) {
             ProductSkus mSku = new ProductSkus();
             CopyProperty.CopyIgnoreNull(productSkus, mSku);
             mSku.setProductId(productId);
@@ -262,27 +262,27 @@ public class ProductService {
 
             /* Save Price Range */
             skusPriceRepository.deleteBySkuId(skusToDelete);
-            productSkus.getSkuPrices().forEach(priceRange -> {
+            for (ProductSkusPrice priceRange : productSkus.getSkuPrices()) {
                 ProductSkusPrice price = new ProductSkusPrice();
                 CopyProperty.CopyIgnoreNull(priceRange, price);
                 price.setProductId(productId);
                 price.setPrice(priceRange.getPrice());
                 price.setProductSku(savedSku);
                 skusPriceRepository.save(price);
-            });
+            }
 
             /* Save new Sku Details */
             productSkusDetailsRepository.delProductSkus(skusToDelete);
             List<ProductSkusDetails> skuDetails = new ArrayList<>();
-            productSkus.getSku().forEach(sku -> {
+            for (SkuAttributed sku : productSkus.getSku()) {
                 ProductSkusDetails skusDetail = new ProductSkusDetails();
                 Attributed attributed = mAttrs.get(sku.getAttributedId());
-                if(Objects.isNull(attributed)) {
+                if (Objects.isNull(attributed)) {
                     throw new RuntimeException("không tồn tại attributed");
                 }
 
                 AttributedValue attributedValue = mAttrValues.get(sku.getAttributedValueId());
-                if(Objects.isNull(attributedValue)) {
+                if (Objects.isNull(attributedValue)) {
                     throw new RuntimeException("không tồn tại attributedValue");
                 }
 
@@ -292,8 +292,8 @@ public class ProductService {
                 skusDetail.setValue(attributedValue.getValue());
                 skusDetail.setProductSku(savedSku);
                 skuDetails.add(skusDetail);
-            });
+            }
             productSkusDetailsRepository.saveAll(skuDetails);
-        });
+        }
     }
 }
