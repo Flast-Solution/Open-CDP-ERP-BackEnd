@@ -619,6 +619,7 @@ CREATE TABLE `data_care` (
   `customer_id` int unsigned DEFAULT '0',
   `object_id` int unsigned DEFAULT '0',
   `object_type` varchar(100) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `cause` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '',
   `information` text NOT NULL,
   `action` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
@@ -638,7 +639,7 @@ CREATE TABLE `data_care` (
 
 LOCK TABLES `data_care` WRITE;
 /*!40000 ALTER TABLE `data_care` DISABLE KEYS */;
-INSERT INTO `data_care` VALUES (9,'Administrator',24,35,'lead','Chờ duyệt','{\"issues\":[\"product\"],\"rating\":9,\"satisfactionPercent\":90,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Khách đợi 2 ngày chưa liên lạc lại, cần liên hệ trong hôm nay.','cao',0,'2025-08-16 23:58:44','2025-08-16 23:58:44'),(10,'Administrator',22,34002,'cohoi','Đang trao đổi ','{\"issues\":[\"product\",\"service\"],\"rating\":9,\"satisfactionPercent\":95,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Đang trình phương án, sự kiến tuần sau sẽ chốt, yêu cầu sale tương tác thêm','cao',0,'2025-08-17 05:22:07','2025-08-17 05:22:07'),(11,'Administrator',23,34007,'order','Tư vấn lại','{\"issues\":[],\"rating\":9,\"satisfactionPercent\":80,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Sale chưa tư vấn đầy đủ thông tin, đơn hàng chậm tiến độ','thap',0,'2025-08-17 05:52:47','2025-08-17 05:52:47');
+INSERT INTO `data_care` VALUES (9,'Administrator',24,35,'lead','Hộp 2 tầng','Chờ duyệt','{\"issues\":[\"product\"],\"rating\":9,\"satisfactionPercent\":90,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Khách đợi 2 ngày chưa liên lạc lại, cần liên hệ trong hôm nay.','cao',0,'2025-08-16 23:58:44','2025-08-16 23:58:44'),(10,'Administrator',22,34002,'cohoi','Mã OFG478491DF','Đang trao đổi ','{\"issues\":[\"product\",\"service\"],\"rating\":9,\"satisfactionPercent\":95,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Đang trình phương án, sự kiến tuần sau sẽ chốt, yêu cầu sale tương tác thêm','cao',0,'2025-08-17 05:22:07','2025-08-17 05:22:07'),(11,'Administrator',23,34007,'order','Mã OYYEQSG789','Tư vấn lại','{\"issues\":[],\"rating\":9,\"satisfactionPercent\":80,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Sale chưa tư vấn đầy đủ thông tin, đơn hàng chậm tiến độ','thap',0,'2025-08-17 05:52:47','2025-08-17 05:52:47');
 /*!40000 ALTER TABLE `data_care` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1978,4 +1979,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-03 22:36:17
+-- Dump completed on 2025-11-03 23:15:12
