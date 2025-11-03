@@ -20,9 +20,6 @@ package vn.flast.entities.warehouse;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import jakarta.validation.constraints.NotNull;
 import vn.flast.models.WarehouseProduct;
 import java.util.List;

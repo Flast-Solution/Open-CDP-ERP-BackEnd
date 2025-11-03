@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  WarehouseProductRepository.java                                       */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -25,12 +25,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.flast.models.WarehouseProduct;
 import java.util.List;
+import java.util.Optional;
 
 public interface WarehouseProductRepository extends JpaRepository<WarehouseProduct, Integer> {
 
     @Query("FROM WarehouseProduct w WHERE w.productId IN :productIds")
     List<WarehouseProduct> findByProductIds(@Param("productIds") List<Long> productIds);
 
-    @Query("FROM WarehouseProduct w WHERE w.skuId = :skuId AND stockId = :stockId")
-    List<WarehouseProduct> findBySkuAndStockId(Long skuId, Integer stockId);
+    @Query(value = "FROM WarehouseProduct w WHERE w.skuId = :skuId AND stockId = :stockId", nativeQuery = true)
+    Optional<WarehouseProduct> findBySkuAndStockId(Long skuId, Integer stockId);
 }

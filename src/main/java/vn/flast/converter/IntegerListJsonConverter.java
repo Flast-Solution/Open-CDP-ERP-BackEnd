@@ -19,41 +19,27 @@ package vn.flast.converter;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-
-import java.util.ArrayList;
+import vn.flast.utils.JsonUtils;
 import java.util.List;
+import java.util.Objects;
 
 /** Convert List<Integer> ↔ JSON String */
 @Converter(autoApply = false)
 public class IntegerListJsonConverter implements AttributeConverter<List<Integer>, String> {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
     @Override
     public String convertToDatabaseColumn(List<Integer> attribute) {
-        if (attribute == null || attribute.isEmpty()) {
+        if (Objects.isNull(attribute) || attribute.isEmpty()) {
             return "[]";
         }
-        try {
-            return mapper.writeValueAsString(attribute);
-        } catch (Exception e) {
-            throw new IllegalStateException("Cannot convert List<Integer> to JSON", e);
-        }
+        return JsonUtils.toJson(attribute);
     }
 
     @Override
     public List<Integer> convertToEntityAttribute(String dbData) {
-        if (dbData == null || dbData.trim().isEmpty() || "null".equalsIgnoreCase(dbData)) {
-            return new ArrayList<>();
-        }
-        try {
-            return mapper.readValue(dbData, new TypeReference<List<Integer>>() {});
-        } catch (Exception e) {
-            throw new IllegalStateException("Cannot convert JSON to List<Integer>", e);
-        }
+        return JsonUtils.Json2ListObject(dbData, Integer.class);
     }
 }

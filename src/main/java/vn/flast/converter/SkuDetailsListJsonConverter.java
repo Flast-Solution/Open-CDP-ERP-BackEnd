@@ -1,6 +1,6 @@
-package vn.flast.domains.stock;
+package vn.flast.converter;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  SkuDetailsListJsonConverter.java                                      */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,24 +20,22 @@ package vn.flast.domains.stock;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+import vn.flast.entities.warehouse.SkuDetails;
+import vn.flast.utils.JsonUtils;
+import java.util.List;
 
+@Converter(autoApply = false)
+public class SkuDetailsListJsonConverter implements AttributeConverter<List<SkuDetails>, String> {
 
+    @Override
+    public String convertToDatabaseColumn(List<SkuDetails> attribute) {
+        return JsonUtils.toJson(attribute);
+    }
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-public class StockUtils {
-    public static String hashSku(String sku) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] hashedBytes = md.digest(sku.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashedBytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+    @Override
+    public List<SkuDetails> convertToEntityAttribute(String dbData) {
+        return JsonUtils.Json2ListObject(dbData, SkuDetails.class);
     }
 }
