@@ -642,6 +642,50 @@ LOCK TABLES `data_care` WRITE;
 INSERT INTO `data_care` VALUES (9,'Administrator',24,35,'lead','Hộp 2 tầng','Chờ duyệt','{\"issues\":[\"product\"],\"rating\":9,\"satisfactionPercent\":90,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Khách đợi 2 ngày chưa liên lạc lại, cần liên hệ trong hôm nay.','cao',0,'2025-08-16 23:58:44','2025-08-16 23:58:44'),(10,'Administrator',22,34002,'cohoi','Mã OFG478491DF','Đang trao đổi ','{\"issues\":[\"product\",\"service\"],\"rating\":9,\"satisfactionPercent\":95,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Đang trình phương án, sự kiến tuần sau sẽ chốt, yêu cầu sale tương tác thêm','cao',0,'2025-08-17 05:22:07','2025-08-17 05:22:07'),(11,'Administrator',23,34007,'order','Mã OYYEQSG789','Tư vấn lại','{\"issues\":[],\"rating\":9,\"satisfactionPercent\":80,\"newFeatures\":\"\",\"supportRequest\":\"\"}','Sale chưa tư vấn đầy đủ thông tin, đơn hàng chậm tiến độ','thap',0,'2025-08-17 05:52:47','2025-08-17 05:52:47');
 /*!40000 ALTER TABLE `data_care` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_delete_data_care_cascade` BEFORE DELETE ON `data_care` FOR EACH ROW BEGIN
+    DELETE FROM `data_care_action` 
+    WHERE `data_care_id` = OLD.`id`;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `data_care_action`
+--
+
+DROP TABLE IF EXISTS `data_care_action`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `data_care_action` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `data_care_id` int NOT NULL,
+  `sso_id` varchar(100) NOT NULL,
+  `content` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_care_action`
+--
+
+LOCK TABLES `data_care_action` WRITE;
+/*!40000 ALTER TABLE `data_care_action` DISABLE KEYS */;
+/*!40000 ALTER TABLE `data_care_action` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `data_collection`
@@ -1979,4 +2023,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-03 23:15:12
+-- Dump completed on 2025-11-03 23:37:02
