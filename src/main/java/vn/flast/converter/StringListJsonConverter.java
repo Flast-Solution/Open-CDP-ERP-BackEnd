@@ -19,38 +19,22 @@ package vn.flast.converter;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-
-import java.util.ArrayList;
+import vn.flast.utils.JsonUtils;
 import java.util.List;
 
 @Converter(autoApply = false)
 public class StringListJsonConverter implements AttributeConverter<List<String>, String> {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
-        if (attribute == null || attribute.isEmpty()) return "[]";
-        try {
-            return mapper.writeValueAsString(attribute);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+        return JsonUtils.toJson(attribute);
     }
 
     @Override
     public List<String> convertToEntityAttribute(String dbData) {
-        if (dbData == null || dbData.trim().isEmpty() || "null".equalsIgnoreCase(dbData)) {
-            return new ArrayList<>();
-        }
-        try {
-            return mapper.readValue(dbData, new TypeReference<List<String>>() {});
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+        return JsonUtils.Json2ListObject(dbData, String.class);
     }
 }

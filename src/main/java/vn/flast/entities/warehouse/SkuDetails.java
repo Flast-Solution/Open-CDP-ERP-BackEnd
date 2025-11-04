@@ -1,6 +1,6 @@
 package vn.flast.entities.warehouse;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  SkuDetails.java                                                       */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -19,10 +19,6 @@ package vn.flast.entities.warehouse;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-
-
-
-
 import lombok.Data;
 import java.util.List;
 

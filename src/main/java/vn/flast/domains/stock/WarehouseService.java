@@ -64,14 +64,11 @@ public class WarehouseService {
     public WarehouseProduct created(SaveStock saveStock) {
         var input = saveStock.model();
         input.setUserName(Common.getSsoId());
-        input.setSkuInfo(JsonUtils.toJson(saveStock.mSkuDetails()));
+        input.setSkuDetails(saveStock.mSkuDetails());
 
         WareHouseStock stock = warehouseStockRepository.findById(input.getStockId()).orElseThrow(
             () -> new RuntimeException("Kho không tồn tại !")
         );
-
-        String hash = StockUtils.hashSku(input.getSkuInfo());
-        input.setSkuHash(hash);
         input.setStockName(stock.getName());
         return wareHouseRepository.save(input);
     }
@@ -87,10 +84,7 @@ public class WarehouseService {
             () -> new RuntimeException("Kho không tồn tại !")
         );
         warehouse.setStockName(stock.getName());
-        warehouse.setSkuInfo(JsonUtils.toJson(saveStock.mSkuDetails()));
-
-        String hash = StockUtils.hashSku(warehouse.getSkuInfo());
-        warehouse.setSkuHash(hash);
+        warehouse.setSkuDetails(saveStock.mSkuDetails());
         return wareHouseRepository.save(warehouse);
     }
 
@@ -109,11 +103,9 @@ public class WarehouseService {
             () -> new ResourceNotFoundException("Kho không tồn tại")
         );
 
-        var listSkus = wareHouseRepository.findBySkuAndStockId(modelWHSource.getSkuId(), model.getWarehouseTargetId());
-        var entity = listSkus.stream()
-            .filter(i -> i.getSkuInfo().equals(modelWHSource.getSkuInfo()))
-            .findFirst()
-            .orElseGet(WarehouseProduct::new);
+        var entity = wareHouseRepository.findBySkuAndStockId(modelWHSource.getSkuId(), model.getWarehouseTargetId()).orElseThrow(
+            () -> new ResourceNotFoundException("SKU not found in stock !")
+        );
         if(NumberUtils.isNull(entity.getId())) {
             CopyProperty.CopyIgnoreNull(modelWHSource, entity, "id");
             entity.setQuantity(model.getQuantity());
@@ -135,16 +127,17 @@ public class WarehouseService {
 
     public void appendFieldTransient(List<WarehouseProduct> lists) {
 
+        /* Map Product */
         List<Long> pIds = lists.stream().map(WarehouseProduct::getProductId).toList();
         List<Product> products = productRepository.findByListId(pIds);
         Map<Long, Product> mProducts = MapUtils.toIdentityMap(products, Product::getId);
 
+        /* Map NCC */
         List<Integer> providerIds = lists.stream().map(WarehouseProduct::getProviderId).toList();
         List<Provider> providers = providerRepository.findByListId(providerIds);
         Map<Integer, String> mProviders = MapUtils.mapKeyValue(providers, Provider::getId, Provider::getName);
 
         for(WarehouseProduct whProduct : lists) {
-            whProduct.setSkuDetails(JsonUtils.Json2ListObject(whProduct.getSkuInfo(), SkuDetails.class));
             Product product = mProducts.get(whProduct.getProductId());
             if(Objects.nonNull(product)) {
                 whProduct.setProduct(product.clone());

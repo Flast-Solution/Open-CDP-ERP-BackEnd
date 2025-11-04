@@ -1,6 +1,6 @@
 package vn.flast.models;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  WarehouseProduct.java                                                 */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -26,8 +26,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import vn.flast.converter.SkuDetailsListJsonConverter;
 import vn.flast.entities.warehouse.SkuDetails;
-import vn.flast.utils.JsonUtils;
 import vn.flast.utils.NumberUtils;
 
 import java.util.ArrayList;
@@ -62,12 +62,9 @@ public class WarehouseProduct implements Cloneable {
     @Column(name = "sku_id")
     private Long skuId;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "sku_info")
-    private String skuInfo;
-
-    @Column(name = "sku_hash", nullable = false)
-    private String skuHash;
+    @Convert(converter = SkuDetailsListJsonConverter.class)
+    @Column(name = "sku_info", columnDefinition = "TEXT")
+    private List<SkuDetails> skuDetails = new ArrayList<>();
 
     @Column(name = "fee")
     private Long fee;
@@ -93,14 +90,6 @@ public class WarehouseProduct implements Cloneable {
             fee = 0L;
         }
         total = quantity;
-    }
-
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    public List<SkuDetails> skuDetails = new ArrayList<>();
-
-    public void addSKUDetailFormSkuInfo () {
-        skuDetails = JsonUtils.Json2ListObject(skuInfo, SkuDetails.class);
     }
 
     @Transient

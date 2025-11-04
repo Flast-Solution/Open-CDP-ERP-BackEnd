@@ -187,7 +187,6 @@ public class ProductService {
 
         /* Map Warehouse */
         List<WarehouseProduct> warehouses = warehouseRepository.findByProductIds(pIds);
-        warehouses.forEach(WarehouseProduct::addSKUDetailFormSkuInfo);
         Map<Long, List<WarehouseProduct>> mWPs = MapUtils.groupBy(warehouses, WarehouseProduct::getProductId);
 
         /* Map SKUS */
