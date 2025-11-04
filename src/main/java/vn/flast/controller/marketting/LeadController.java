@@ -1,6 +1,6 @@
 package vn.flast.controller.marketting;
 /*************************************************************************/
-/*  app.java                                                              */
+/*  LeadController.java                                                   */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,8 +109,8 @@ public class LeadController extends BaseController {
         return MyResponse.response(data);
     }
 
-    @GetMapping(value = "/find-by-phone/{phone}")
-    public MyResponse<?> findPhone(@PathVariable String phone){
+    @GetMapping(value = "/find-by-phone")
+    public MyResponse<?> findPhone(@RequestParam String phone){
         var data = dataService.findByPhone(phone);
         return MyResponse.response(data);
     }

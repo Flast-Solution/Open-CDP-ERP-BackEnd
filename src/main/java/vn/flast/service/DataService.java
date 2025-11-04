@@ -263,6 +263,9 @@ public class DataService extends Subscriber implements Publisher {
     }
 
     public DataOwner updateOwner(Data data) {
+        if(Objects.isNull(data.getSaleId())) {
+            throw new RuntimeException("saleId not exits in Data for update DataOwner !");
+        }
         DataOwner dataOwner = dataOwnerRepository.findByMobile(data.getCustomerMobile());
         if(Objects.isNull(dataOwner)) {
             User sale = userRepository.findById(data.getSaleId()).orElseThrow(

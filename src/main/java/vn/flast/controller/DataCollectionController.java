@@ -19,6 +19,7 @@ package vn.flast.controller;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +57,7 @@ public class DataCollectionController extends BaseController {
             var model = productRepository.findById(dataCollection.getProductId());
             dataCollection.setProductName(model.map(Product::getName).orElse(""));
         }
+        dataCollection.setUserId(getUserId());
         var entity = dataCollectionService.save(dataCollection);
         return MyResponse.response(entity, "Đã cập nhật bộ sưu tập dữ liệu thô !");
     }

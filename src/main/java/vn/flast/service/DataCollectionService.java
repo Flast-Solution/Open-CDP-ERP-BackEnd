@@ -45,12 +45,18 @@ public class DataCollectionService {
     }
 
     public Ipage<DataCollection> fetch(DataCollectionFilter filter) {
+
         int LIMIT = 10;
         int PAGE = filter.page();
+
         var et = EntityQuery.create(entityManager, DataCollection.class);
         if(filter.onlyMobile()) {
             et.dataIsNotNull("mobile");
         }
+        et.stringEqualsTo("fullName", filter.name());
+        et.stringEqualsTo("mobile", filter.mobile());
+
+        et.addDescendingOrderBy("id");
         et.setMaxResults(LIMIT).setFirstResult(LIMIT * PAGE);
         var lists = et.list();
         return Ipage.generator(LIMIT, et.count(), PAGE, lists);

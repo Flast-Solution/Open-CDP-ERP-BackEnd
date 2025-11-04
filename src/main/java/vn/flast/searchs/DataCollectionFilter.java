@@ -5,6 +5,8 @@ import vn.flast.utils.NumberUtils;
 import java.util.Date;
 
 public record DataCollectionFilter(
+    String name,
+    String mobile,
     String address,
     Integer status,
     Integer userId,
