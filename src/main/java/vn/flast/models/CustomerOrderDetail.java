@@ -27,8 +27,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import vn.flast.converter.SkuDetailsListJsonConverter;
+import vn.flast.entities.warehouse.SkuDetails;
 import vn.flast.utils.NumberUtils;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "customer_order_detail")
 @Entity
@@ -61,8 +66,9 @@ public class CustomerOrderDetail {
     @Column(name = "sku_id")
     private Long skuId;
 
-    @Column(name = "sku_info")
-    private String skuInfo;
+    @Convert(converter = SkuDetailsListJsonConverter.class)
+    @Column(name = "sku_info", columnDefinition = "TEXT")
+    private List<SkuDetails> skuDetails = new ArrayList<>();
 
     @Column(name = "price")
     private Double price;

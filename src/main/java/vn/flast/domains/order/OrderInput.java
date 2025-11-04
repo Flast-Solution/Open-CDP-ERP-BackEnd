@@ -19,10 +19,6 @@ package vn.flast.domains.order;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-
-
-
-
 import vn.flast.domains.payments.OrderPaymentInfo;
 import vn.flast.entities.order.OrderDetail;
 import vn.flast.models.CustomerOrder;
@@ -114,7 +110,7 @@ public record OrderInput(
             detail.setId(detailInput.getDetailId());
         }
         detail.setWarrantyPeriod(detailInput.getWarrantyPeriod());
-        detail.setSkuInfo(JsonUtils.toJson(detailInput.getSkuDetails()));
+        detail.setSkuDetails(detailInput.getSkuDetails());
         detail.setName(detailInput.getOrderName());
         detail.setTotal(detailInput.getTotalPrice());
         detail.setPriceOff(detailInput.getDiscountAmount());

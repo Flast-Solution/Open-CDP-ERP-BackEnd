@@ -24,7 +24,6 @@ import vn.flast.utils.NumberUtils;
 
 public record WarehouseFilter(
     Integer page,
-    String skuHash,
     Integer productId,
     Integer skuId,
     Integer stockId,

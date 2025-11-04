@@ -108,7 +108,7 @@ public class OrderController {
             );
 
             detail.setSkuDetailCode(String.valueOf(orderDetail.getSkuId()));
-            detail.setSkuDetails(JsonUtils.Json2ListObject(orderDetail.getSkuInfo(), SkuDetails.class));
+            detail.setSkuDetails(orderDetail.getSkuDetails());
             details.add(detail);
         }
 

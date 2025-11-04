@@ -29,7 +29,6 @@ import vn.flast.components.RecordNotFoundException;
 import vn.flast.domains.order.OrderService;
 import vn.flast.entities.warehouse.Delivery;
 import vn.flast.entities.warehouse.SaveStock;
-import vn.flast.entities.warehouse.SkuDetails;
 import vn.flast.exception.ResourceNotFoundException;
 import vn.flast.models.*;
 import vn.flast.pagination.Ipage;
@@ -160,11 +159,7 @@ public class WarehouseService {
             .setMaxResults(LIMIT)
             .setFirstResult(LIMIT * currentPage);
 
-        if(StringUtils.isNotNull(filter.skuHash())) {
-            et.stringEqualsTo("skuHash", filter.skuHash());
-        }
         var lists = et.list();
-
         appendFieldTransient(lists);
         return Ipage.generator(LIMIT, et.count(), currentPage, lists);
     }
