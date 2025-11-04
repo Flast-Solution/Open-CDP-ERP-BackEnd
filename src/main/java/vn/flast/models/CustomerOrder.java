@@ -26,7 +26,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import vn.flast.exception.ResourceNotFoundException;
 import vn.flast.utils.NumberUtils;
 
 import java.util.ArrayList;
@@ -168,14 +167,6 @@ public class CustomerOrder implements Cloneable {
     @JsonManagedReference(value = "details")
     @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<CustomerOrderDetail> details;
-
-    public CustomerOrderDetail takeDetailByCode(String dtCode) {
-        return this.getDetails()
-            .stream()
-            .filter(detail -> detail.getCode().equals(dtCode))
-            .findFirst()
-            .orElseThrow(ResourceNotFoundException::new);
-    }
 
     @Override
     public CustomerOrder clone() {

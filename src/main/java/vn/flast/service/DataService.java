@@ -19,10 +19,6 @@ package vn.flast.service;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-
-
-
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.Getter;
@@ -33,7 +29,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import vn.flast.controller.BaseController;
 import vn.flast.domains.customer.CustomerPersonalService;
 import vn.flast.exception.ResourceNotFoundException;
 import vn.flast.models.*;
@@ -48,18 +43,15 @@ import vn.flast.repositories.*;
 import vn.flast.searchs.DataFilter;
 import vn.flast.pagination.Ipage;
 import vn.flast.utils.BuilderParams;
+import vn.flast.utils.Common;
 import vn.flast.utils.CopyProperty;
 import vn.flast.utils.EntityQuery;
 import vn.flast.utils.NumberUtils;
-import vn.flast.utils.SqlBuilder;
 import vn.flast.utils.StringUtils;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @Service("dataService")
@@ -68,15 +60,13 @@ public class DataService extends Subscriber implements Publisher {
 
     private final DataMediaRepository dataMediaRepository;
     private final DataRepository dataRepository;
-    private final DataWorkService dataWorkService;
     private final UserRepository userRepository;
     private final DataOwnerRepository dataOwnerRepository;
-    private final BaseController baseController;
     private final ProductRepository productRepository;
     private final FlastNoteService noteService;
 
-    @Autowired
     @Lazy
+    @Autowired
     private CustomerPersonalService customerPersonalService;
 
     @PersistenceContext
@@ -202,7 +192,10 @@ public class DataService extends Subscriber implements Publisher {
 
     public Ipage<Data> getListDataFromCustomerService(DataFilter filter) {
 
-        var user = baseController.getInfo();
+        var user = Common.getInfo();
+        if(Objects.isNull(user)) {
+            throw new RuntimeException("User request not identity !");
+        }
         var LIMIT = filter.getLimit();
         var offset = filter.page() * LIMIT;
 
@@ -228,55 +221,6 @@ public class DataService extends Subscriber implements Publisher {
         return new Ipage<>(LIMIT,et.count(), filter.page(), lists);
     }
 
-    public Ipage<Data> leadOfWork(DataFilter filter) {
-        int LimitInWork = 20;
-        List<DataWork> listWork = dataWorkService.findDataWork(LimitInWork, filter.page() * LimitInWork, filter);
-        var leadIds = listWork.stream().map(DataWork::getDataId).toList();
-        List<Data> data = this.findIdIn(leadIds);
-        return new Ipage<>(LimitInWork, data.size(), filter.page(), data);
-    }
-
-    public List<Data> findIdIn(List<Integer> ids) {
-        if (ids.isEmpty()) {
-            return new ArrayList<>();
-        }
-        EntityQuery<Data> et = EntityQuery.create(entityManager, Data.class);
-        return et.in("id", ids).list();
-    }
-
-    public Ipage<?> leadOfOrder(DataFilter filter) {
-        int LIMIT = 20;
-        int OFFSET = ( filter.page() - 1 ) * LIMIT;
-
-        final String totalSQL = "FROM `data` d left join `customer_order` c on d.id = c.data_id ";
-        SqlBuilder sqlBuilder = SqlBuilder.init(totalSQL);
-        sqlBuilder.addStringEquals("c.code", filter.getOrderCode());
-        sqlBuilder.addIntegerEquals("d.sale_id", filter.getSaleId());
-        sqlBuilder.addStringEquals("d.customer_mobile", filter.getCustomerMobile());
-        sqlBuilder.addIntegerEquals("d.source", filter.getSource());
-        sqlBuilder.addIntegerEquals("d.from_department", Data.FROM_DEPARTMENT.FROM_DATA.value());
-        sqlBuilder.addDateBetween("d.in_time", filter.getFrom(), filter.getTo());
-
-        String ft = Optional.ofNullable(filter.getFilterOrderType()).orElse("");
-        switch (ft) {
-            case "notCohoi" -> sqlBuilder.addIsEmpty("c.id");
-            case "cohoi" -> sqlBuilder.addNotEmpty("c.id");
-            case "cohoiNotOrder" -> sqlBuilder.addStringEquals("c.type", "cohoi");
-            case "order" -> sqlBuilder.addStringEquals("c.type", "order");
-        }
-        String finalQuery = sqlBuilder.builder();
-
-        var countQuery = entityManager.createNativeQuery(sqlBuilder.countQueryString());
-        Long count = sqlBuilder.countOrSumQuery(countQuery);
-
-        var nativeQuery = entityManager.createNativeQuery("SELECT d.* " + finalQuery + " ORDER BY d.in_time DESC", Data.class);
-        nativeQuery.setMaxResults(LIMIT);
-        nativeQuery.setFirstResult(OFFSET);
-
-        var listData = EntityQuery.<Data>getListOfNativeQuery(nativeQuery);
-        return Ipage.generator(LIMIT, count, filter.page(), listData);
-    }
-
     public Data findById(Long id) {
         var data = dataRepository.findById(id).orElseThrow(
             () -> new RuntimeException("Không tồn tại bản ghi này")
@@ -286,6 +230,12 @@ public class DataService extends Subscriber implements Publisher {
             .map(DataMedia::getFile).toList();
         data.setFileUrls(medias);
         return data;
+    }
+
+    public Data findByPhone(String phone) {
+        return dataRepository.findFirstByPhone(phone).orElseThrow(
+            () -> new RuntimeException("Không tồn tại bản ghi này")
+        );
     }
 
     public void updateDataMedias(Long dataId, Integer sessionId) {

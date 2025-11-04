@@ -21,13 +21,14 @@ package vn.flast.controller.marketting;
 /**************************************************************************/
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import vn.flast.controller.BaseController;
 import vn.flast.models.DataMedia;
+import vn.flast.repositories.CustomerOrderRepository;
 import vn.flast.repositories.CustomerPersonalRepository;
 import vn.flast.repositories.DataMediaRepository;
-import vn.flast.repositories.DataRepository;
 import vn.flast.searchs.DataFilter;
 import vn.flast.entities.MyResponse;
 import vn.flast.models.Data;
@@ -54,21 +55,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Log4j2
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/data")
 public class LeadController extends BaseController {
 
-    @Autowired
-    private DataService dataService;
-
-    @Autowired
-    private DataRepository dataRepository;
-
-    @Autowired
-    private DataMediaRepository mediaRepository;
-
-    @Autowired
-    private CustomerPersonalRepository customerPersonalRepository;
+    private final DataService dataService;
+    private final CustomerOrderRepository orderRepository;
+    private final DataMediaRepository mediaRepository;
+    private final CustomerPersonalRepository customerPersonalRepository;
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PostMapping(value = "/create")
@@ -87,7 +82,7 @@ public class LeadController extends BaseController {
         boolean isAdminOrManager = userPrinciple.getAuthorities().stream().anyMatch(auth
             -> auth.getAuthority().equals("ROLE_SALE") || auth.getAuthority().equals("ROLE_SALE_MANAGER")
         );
-        if(dataRepository.existsByCustomerMobile(iodata.getCustomerMobile())){
+        if(orderRepository.isRQLByPhone(iodata.getCustomerMobile())) {
             iodata.setFromDepartment(Data.FROM_DEPARTMENT.FROM_RQL.value());
         } else if(isAdminOrManager) {
             iodata.setFromDepartment(Data.FROM_DEPARTMENT.FROM_SALE.value());
@@ -112,6 +107,12 @@ public class LeadController extends BaseController {
     @GetMapping(value = "/view")
     public MyResponse<?> viewData(@RequestParam Long dataId){
         var data = dataService.findById(dataId);
+        return MyResponse.response(data);
+    }
+
+    @GetMapping(value = "/find-by-phone/{phone}")
+    public MyResponse<?> findPhone(@PathVariable String phone){
+        var data = dataService.findByPhone(phone);
         return MyResponse.response(data);
     }
 

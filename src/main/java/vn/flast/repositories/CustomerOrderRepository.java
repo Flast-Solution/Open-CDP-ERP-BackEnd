@@ -1,6 +1,6 @@
 package vn.flast.repositories;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  CustomerOrderRepository.java                                          */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -38,4 +38,10 @@ public interface CustomerOrderRepository extends GenericRepository<CustomerOrder
 
     @Query(value = "SELECT c.* FROM customer_order c WHERE c.customer_id = :customerId AND c.type = :type LIMIT :limit", nativeQuery = true)
     List<CustomerOrder> findByCustomerId(Long customerId, String type, Integer limit);
+
+    @Query("""
+        SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END
+        FROM CustomerOrder c WHERE c.customerMobilePhone = :phone AND c.type = 'order'
+    """)
+    boolean isRQLByPhone(@Param("phone") String phone);
 }
