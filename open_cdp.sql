@@ -643,6 +643,32 @@ INSERT INTO `data_care` VALUES (9,'Administrator',24,35,'lead','Chờ duyệt','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `data_care_action`
+--
+
+DROP TABLE IF EXISTS `data_care_action`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `data_care_action` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `data_care_id` int NOT NULL,
+  `sso_id` varchar(100) NOT NULL,
+  `content` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_care_action`
+--
+
+LOCK TABLES `data_care_action` WRITE;
+/*!40000 ALTER TABLE `data_care_action` DISABLE KEYS */;
+/*!40000 ALTER TABLE `data_care_action` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `data_collection`
 --
 
@@ -756,11 +782,15 @@ CREATE TABLE `flast_note` (
   `object_id` int NOT NULL,
   `data_type` varchar(100) NOT NULL DEFAULT 'text',
   `user_id` int NOT NULL,
+  `reply_id` int DEFAULT NULL,
   `user_note` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '',
   `content` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `flast_note_object_type_IDX` (`object_type`),
+  KEY `flast_note_object_id_IDX` (`object_id`),
+  KEY `flast_note_user_id_IDX` (`user_id`,`reply_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=590 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1973,4 +2003,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-04 15:35:23
+-- Dump completed on 2025-11-05 16:14:02

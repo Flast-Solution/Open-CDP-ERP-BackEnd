@@ -1,6 +1,6 @@
-package vn.flast.entities;
+package vn.flast.searchs;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  NoteFilter.java                                                       */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -20,21 +20,42 @@ package vn.flast.entities;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import vn.flast.utils.NumberUtils;
+import java.util.Date;
+import java.util.Objects;
 
-@Getter @Setter
-public class ComplaintFilter {
-    private Integer limit;
-    private String phone;
-    private Integer saleId;
-    private String code;
-    private Integer page;
+public record NoteFilter(
+    String objectType,
+    Integer page,
+    Integer limit,
+    Integer objectId,
+    Integer userId,
+    Integer replyId,
+    Boolean asList,
+    Boolean asFirst,
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    Date from,
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    Date to
+) implements BaseFilter {
+    @Override
     public Integer page() {
         return NumberUtils.isNull(page) ? 0 : (page - 1);
+    }
+
+    @Override
+    public Integer limit() {
+        return NumberUtils.isNull(limit) ? 20 : limit;
+    }
+
+    @Override
+    public Boolean asList() {
+        return Objects.nonNull(asList) && asList;
+    }
+
+    @Override
+    public Boolean asFirst() {
+        return Objects.nonNull(asFirst) && asFirst;
     }
 }

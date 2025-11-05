@@ -1,6 +1,6 @@
 package vn.flast.models;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  FlastNote.java                                                        */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -21,16 +21,20 @@ package vn.flast.models;
 /**************************************************************************/
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import vn.flast.converter.NoteActionConverter;
+import vn.flast.entities.NoteAction;
 import java.util.Date;
 
 @Table(name = "flast_note")
@@ -38,14 +42,8 @@ import java.util.Date;
 @Getter @Setter
 public class FlastNote {
 
-    public static final int TYPE_COHOI = 0;
-    public static final int TYPE_ORDER = 1;
-
     /* Object type defined */
-    public static final String OBJECT_TYPE_ORDER_NOTE = "order";
     public static final String OBJECT_TYPE_LEAD = "data";
-
-    /* Data type defined */
     public static final String DATA_TYPE_LEAD_NOTE = "lead_note";
 
     @Id
@@ -61,19 +59,25 @@ public class FlastNote {
     @Column(name = "object_id")
     private Long objectId;
 
-    @Column(name = "data_type")
+    @NotNull(message = "Vui lòng thêm Loại dữ liệu note")
+    @Column(name = "data_type", length = 100)
     private String dataType;
 
+    @NotNull(message = "UserId không được để trống")
     @Column(name = "user_id")
     private Integer userId;
+
+    @Column(name = "reply_id")
+    private Integer replyId;
 
     @NotNull(message = "Người note không được để trống")
     @Column(name = "user_note")
     private String userNote;
 
     @NotNull(message = "Vui lòng nhập nội dung")
-    @Column(name = "content")
-    private String content;
+    @Convert(converter = NoteActionConverter.class)
+    @Column(name = "content", columnDefinition = "TEXT")
+    private NoteAction content;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -82,4 +86,9 @@ public class FlastNote {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @PrePersist
+    public void beforePersist() {
+        replyId = 0;
+    }
 }

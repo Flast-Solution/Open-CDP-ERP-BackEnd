@@ -88,7 +88,7 @@ public class ProductService {
             String twoLetterService = provider.getName().substring(0, 2);
             String code;
             do {
-                String random = Common.getAlphaNumericString(8, false);
+                String random = Common.getAlphaNumericString(13, false);
                 code = (twoLetterService + random).toUpperCase();
             } while (productsRepository.findByCode(code) != null);
             nProduct.setCode(code);

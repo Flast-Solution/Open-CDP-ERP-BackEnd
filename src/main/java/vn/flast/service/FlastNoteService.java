@@ -1,6 +1,6 @@
 package vn.flast.service;
 /**************************************************************************/
-/*  app.java                                                              */
+/*  FlastNoteService.java                                                 */
 /**************************************************************************/
 /*                       Tệp này là một phần của:                         */
 /*                             Open CDP                                   */
@@ -21,13 +21,19 @@ package vn.flast.service;
 /**************************************************************************/
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import vn.flast.entities.NoteAction;
+import vn.flast.exception.ResourceNotFoundException;
 import vn.flast.models.Data;
 import vn.flast.models.FlastNote;
+import vn.flast.pagination.Ipage;
 import vn.flast.repositories.FlastNoteRepository;
+import vn.flast.repositories.GenericRepository;
+import vn.flast.searchs.NoteFilter;
 import vn.flast.utils.BuilderParams;
 import vn.flast.utils.Common;
-import vn.flast.utils.JsonUtils;
+import java.util.Optional;
 
 @Service("flastNoteServer")
 @RequiredArgsConstructor
@@ -35,15 +41,50 @@ public class FlastNoteService {
 
     private final FlastNoteRepository noteRepository;
 
+    public Ipage<FlastNote> fetch(NoteFilter filter) {
+
+        int LIMIT = filter.limit();
+        int PAGE = filter.page();
+
+        Sort SORT = Sort.by(Sort.Direction.DESC, "id");
+        GenericRepository.SpecificationBuilder<FlastNote> builder = noteRepository
+            .isEqual("objectType", filter.objectType())
+            .isEqual("objectId", filter.objectId())
+            .group()
+                .isEqual("userId", filter.userId())
+                .or()
+                .isEqual("replyId", filter.replyId())
+            .endGroup()
+            .between("updatedAt", filter.from(), filter.to());
+        return builder.toPage(PAGE * LIMIT, LIMIT, SORT);
+    }
+
     public void createLeadNote(Data lead) {
+
         BuilderParams body = BuilderParams.create()
             .addParam("name", lead.getProductName())
             .addParam("note", lead.getNote());
+
         FlastNote flastNote = factoryAsLead();
         flastNote.setObjectId(lead.getId());
         flastNote.setDataType(FlastNote.DATA_TYPE_LEAD_NOTE);
-        flastNote.setContent(JsonUtils.toJson(body));
+        flastNote.setReplyId(lead.getSaleId());
+
+        NoteAction noteAction = NoteAction.create().addNote(body).addReply("{}");
+        flastNote.setContent(noteAction);
         noteRepository.save(flastNote);
+    }
+
+    public FlastNote createReply(FlastNote fNote) {
+        FlastNote flastNote = Optional.ofNullable(fNote)
+            .map(FlastNote::getId)
+            .flatMap(noteRepository::findById)
+            .orElseThrow(() -> new ResourceNotFoundException(""));
+        return noteRepository.save(flastNote);
+    }
+
+    public FlastNote createNote(FlastNote fNote) {
+        return noteRepository.save(fNote);
     }
 
     private FlastNote factoryAsLead() {

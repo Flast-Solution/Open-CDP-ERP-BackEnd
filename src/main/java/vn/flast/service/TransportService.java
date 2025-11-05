@@ -27,7 +27,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import vn.flast.entities.TransportFilter;
+import vn.flast.searchs.TransportFilter;
 import vn.flast.models.Transporter;
 import vn.flast.pagination.Ipage;
 import vn.flast.repositories.TransporterRepository;

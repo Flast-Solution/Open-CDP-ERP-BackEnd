@@ -20,9 +20,6 @@ package vn.flast.searchs;
 /* có trách nghiệm                                                        */
 /**************************************************************************/
 
-
-
-
 import vn.flast.utils.NumberUtils;
 import java.util.List;
 

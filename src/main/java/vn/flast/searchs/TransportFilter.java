@@ -1,4 +1,4 @@
-package vn.flast.entities;
+package vn.flast.searchs;
 /**************************************************************************/
 /*  app.java                                                              */
 /**************************************************************************/
@@ -19,20 +19,14 @@ package vn.flast.entities;
 /* Đội ngũ phát triển mong rằng phần mềm được sử dụng đúng mục đích và    */
 /* có trách nghiệm                                                        */
 /**************************************************************************/
-
-
-
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.flast.utils.NumberUtils;
-
 import java.util.Date;
 
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 public class TransportFilter {
 
@@ -44,7 +38,6 @@ public class TransportFilter {
     private Date to;
 
     private Integer page;
-
 
     public Integer page() {
         return NumberUtils.isNull(page) ? 0 : (page - 1);
